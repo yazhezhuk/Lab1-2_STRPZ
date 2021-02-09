@@ -12,8 +12,8 @@ namespace Lab1Components
         {
             LoadHours += order.Goods.ProcessTime;
             order.EstimateTime += LoadHours;
-            System.Console.WriteLine(
-                $"Manager {Name} will soon start to process your order, please wait {order.EstimateTime} hours");
+            Console.WriteLine($" Manager {Name} will soon start to process your order," +
+                             $" please wait {order.EstimateTime} hours");
         }
 
     }

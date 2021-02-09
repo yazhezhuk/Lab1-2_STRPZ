@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
-using Microsoft.VisualBasic;
 
 namespace Lab1Components
 {
@@ -30,60 +25,62 @@ namespace Lab1Components
                 { new Manager("Vitaliy"),new Manager("Denis"),new Manager("Artem") });
             Drivers.AddRange(new Employee[]
                 { new Driver("Yuriy"), new Driver("Yaroslave"), new Driver("Billy") });
-            Warehouses.AddRange(new Warehouse[]
+            Warehouses.AddRange(new[]
                 { new Warehouse("First",200),new Warehouse("Second",350)
                     ,new Warehouse("Third",400),new Warehouse("Fourth",500)  });
+            Goods.AddRange(new[]
+                { new Goods(GoodsType.Food,100), new Goods(GoodsType.Furniture,1500),
+                    new Goods(GoodsType.Electronics,2000) });
 
             Name = name;
         }
 
         public void OrderBuilder(string username)
         {
-            Console.WriteLine($"Welcome to our shop \n");
-            PrintItems(new List<IPrintable>(Goods));
+            Console.WriteLine($"Welcome to {Name}, {username} \n");
             Order order;
             Goods selectedProduct = null;
             Warehouse selectedWarehouse = null;
             while (true)
             {
-                Console.WriteLine($"Menu: \n " +
-                                  $"0)Exit" +
-                                  $"1)Select goods" +
-                                  $"2)Select warehouse" +
-                                  $"3)Process order");
-                int choice = Console.Read();
+                Console.WriteLine($"Menu: \n" +
+                                  $"0)Exit. \n" +
+                                  $"1)Select goods. \n" +
+                                  $"2)Select warehouse. \n" +
+                                  $"3)Process order. \n");
+                ConsoleKey choice = Console.ReadKey().Key;
+                Console.WriteLine();
                 switch (choice)
                 {
-                    case 0:
+                    case ConsoleKey.D0:
                         return;
-                    case 1:
+
+                    case ConsoleKey.D1:
                         selectedProduct = GoodsSelector();
                         break;
-                    case 2:
+                    case ConsoleKey.D2:
                         selectedWarehouse = WarehouseSelector();
                         break;
-                    case 3:
+                    case ConsoleKey.D3:
                         if (selectedWarehouse != null && selectedProduct != null)
                         {
-                            order = new Order(selectedProduct,selectedWarehouse);
+                            order = new Order(selectedProduct, selectedWarehouse);
                             ProcessOrder(order);
                             order.Print();
 
                             Unselect(ref selectedProduct, ref selectedWarehouse);
                         }
+                        else
+                        {
+                            Console.WriteLine($"Something is missing here, be sure to select warehouse and goods \n");
+                        }
                         break;
-                } 
-                
+                }
+
             }
-
-
-
-
-
-
         }
 
-        private void Unselect(ref Goods goods, ref Warehouse warehouse)
+        private void Unselect(ref Goods goods,ref  Warehouse warehouse)
         {
             goods = null;
             warehouse = null;
@@ -93,15 +90,19 @@ namespace Lab1Components
         {
             Console.WriteLine($"Please choose one of our goods to order or press 0 to leave:");
             PrintItems(new List<IPrintable>(Goods));
-            int choice = Console.Read();
-            if (choice == 0)
+            do
             {
-                return null;
-            } 
-            else if (choice < Goods.Count)
-            {
-                return Goods[choice + 1];
-            }
+                int choice = Convert.ToChar(Console.ReadKey().Key) - '0';
+                if (choice == 0)
+                {
+                    return null;
+                }
+                else if (choice <= Goods.Count)
+                {
+                    Console.WriteLine("Goods selected!");
+                    return Goods[choice - 1];
+                }
+            } while (Console.ReadKey().Key != ConsoleKey.Enter);
 
             return null;
         }
@@ -110,16 +111,19 @@ namespace Lab1Components
         {
             Console.WriteLine($"Please choose one of our warehouses or press 0 to leave:");
             PrintItems(new List<IPrintable>(Warehouses));
-            int choice = Console.Read();
-            if (choice == 0)
+            do
             {
-                return null;
-            }
-            else if (choice < Warehouses.Count)
-            {
-                return Warehouses[choice + 1];
-            }
-
+                int choice = Convert.ToChar(Console.ReadKey().Key) - '0';
+                if (choice == 0)
+                {
+                    return null;
+                }
+                else if (choice <= Warehouses.Count)
+                {
+                    Console.WriteLine("Warehouse selected!");
+                    return Warehouses[choice - 1];
+                }
+            } while (Console.ReadKey().Key != ConsoleKey.Enter);
             return null;
         }
 
@@ -133,16 +137,16 @@ namespace Lab1Components
             Employee driver = FindLeastBusyEmployee(Drivers);
             Employee manager = FindLeastBusyEmployee(Managers);
 
-            driver.ProcessOrder(order);
             manager.ProcessOrder(order);
+            driver.ProcessOrder(order);
         }
 
         public Employee FindLeastBusyEmployee(List<Employee> employees)
         {
-            Employee leastBusy = Managers.First();
+            Employee leastBusy = employees.First();
             foreach (var employee in employees)
             {
-                leastBusy = (leastBusy.LoadHours < employee.LoadHours) 
+                leastBusy = (leastBusy.LoadHours > employee.LoadHours)
                     ? employee
                     : leastBusy;
             }

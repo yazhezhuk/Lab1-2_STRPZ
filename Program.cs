@@ -6,7 +6,8 @@ namespace Lab1Components
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Shop shop = new Shop("Rozetka");
+            shop.OrderBuilder("Vitaliy");
         }
     }
 }

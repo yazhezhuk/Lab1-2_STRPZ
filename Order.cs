@@ -10,7 +10,7 @@ namespace Lab1Components
         public Warehouse Warehouse { get; }
         public Goods Goods { get; }
 
-        public int EstimateTime { get; set; }
+        public double EstimateTime { get; set; }
 
         public Order(Goods goods,Warehouse warehouse)
         {
@@ -20,14 +20,15 @@ namespace Lab1Components
 
         public double Cost
         {
-            get => Goods.Price + Warehouse.Distance * 0.1;
+            get => Goods.Price + Warehouse.Distance * 0.2;
         }
 
         public void Print()
         {
-            Console.WriteLine($"Your order will cost {Cost} hrn:");
+            Console.WriteLine($"Your order total cost (goods cost + delivery) is {Cost} hrn. \n" +
+                              $"Ordered items:");
             Goods.Print();
-            Console.WriteLine($"and will be delivered to {Warehouse.Name} in about {EstimateTime} hours");
+            Console.WriteLine($"-----This order will be delivered to {Warehouse.Name} warehouse in about {EstimateTime} hours------");
         }
     }
 }
