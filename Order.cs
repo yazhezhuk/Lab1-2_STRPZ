@@ -10,11 +10,11 @@ namespace Lab1Components
         public int Id { get; set; }
 
         public Warehouse Warehouse { get; }
-        public Goods Goods { get; }
+        public List<Goods> Goods { get; }
 
         public double EstimateDeliveryTime { get; set; }
 
-        public Order(Goods goods,Warehouse warehouse)
+        public Order(List<Goods> goods,Warehouse warehouse)
         {
             Warehouse = warehouse;
             Goods = goods;
@@ -22,7 +22,10 @@ namespace Lab1Components
 
         public double Cost
         {
-            get => Goods.Price + Warehouse.Distance * 0.2;
+            get
+            {
+                return Goods.Sum(e => e.Price) + Warehouse.Distance * 0.2;
+            }
         }
     }
 }

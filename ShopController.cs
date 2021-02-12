@@ -2,9 +2,14 @@
 {
     public class ShopController
     {
-        private ShopInterface Interface { get; set; }
-        private ShopRepository<> Interface { get; set; }
+        private ShopInterface ShopInterface { get; set; }
+        private DataRepository DataRepository { get; set; }
 
+        public ShopController(ShopInterface shopInterface, DataRepository repository)
+        {
+            ShopInterface = shopInterface;
+            DataRepository = repository;
+        }
 
         public void 
     }
