@@ -5,20 +5,17 @@ using System.Text;
 
 namespace Lab1Components
 {
-    public class Warehouse :IPrintable
+    public class Warehouse : ISaveableEntity
     {
-        public Warehouse(string name, int distance)
-        {
-            Name = name;
-            Distance = distance;
-        }
+        public int Id { get; set; }
 
         public string Name { get; set; }
         public int Distance { get; set; }
 
-        public void Print()
+        public Warehouse(string name, int distance)
         {
-            Console.WriteLine($"Warehouse {Name} is {Distance} km away");
+            Name = name;
+            Distance = distance;
         }
     }
 }

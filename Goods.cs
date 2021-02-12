@@ -8,8 +8,10 @@ namespace Lab1Components
         Electronics,
         Furniture
     }
-    public class Goods:IPrintable
+    public class Goods : ISaveableEntity
     {
+        public int Id { get; set; }
+
         public GoodsType Type { get; set; }
         public int Price { get; set; }
 
@@ -36,11 +38,5 @@ namespace Lab1Components
                 }
             }
         }
-
-        public void Print()
-        {
-            Console.WriteLine($"Name: {Type}, Price: {Price}");
-        }
-
     }
 }

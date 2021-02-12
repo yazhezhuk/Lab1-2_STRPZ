@@ -3,15 +3,19 @@ using System.Runtime.CompilerServices;
 
 namespace Lab1Components
 {
-    public abstract class Employee
+    public abstract class Employee : ISaveableEntity
     {
-        public string Name { get; set; }
-        public double LoadHours { get; set; }
+        public int Id { get; set; }
 
-        protected Employee(string name)
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public double LoadedHours { get; set; }
+        public Employee(int id, string name, int age)
         {
+            Id = id;
             Name = name;
-            LoadHours = 0;
+            Age = age;
         }
 
         public abstract void ProcessOrder(Order order);

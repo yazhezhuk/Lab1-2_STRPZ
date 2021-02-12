@@ -127,7 +127,7 @@ namespace Lab1Components
             return null;
         }
 
-        private void PrintItems(List<IPrintable> items)
+        public void PrintItems(List<IPrintable> items)
         {
             items.ForEach(i => i.Print());
         }

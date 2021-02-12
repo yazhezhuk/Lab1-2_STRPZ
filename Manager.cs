@@ -1,20 +1,13 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Runtime.CompilerServices;
-
-namespace Lab1Components
+﻿namespace Lab1Components
 {
-    public class Manager: Employee
+    public class Manager : Employee
     {
-        public Manager(string name):base(name) { }
+        public Manager(int id, string name, int age) : base(id, name, age) { }
 
         public override void ProcessOrder(Order order)
-        {
-            LoadHours += order.Goods.ProcessTime;
-            order.EstimateTime += LoadHours;
-            Console.WriteLine($" Manager {Name} will soon start to process your order," +
-                             $" please wait {order.EstimateTime} hours");
+        { 
+            this.LoadedHours += order.Goods.ProcessTime;
+            order.EstimateDeliveryTime += this.LoadedHours;
         }
-
     }
 }
