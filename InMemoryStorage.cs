@@ -4,36 +4,36 @@ using System.Collections.Generic;
 
 namespace Lab1Components
 {
-    public class InMemoryStorage
+  public class InMemoryStorage
+  {
+    private Dictionary<string, IEnumerable<ISaveableEntity>> Data { get; }
+
+    private static InMemoryStorage _instance;
+    public static InMemoryStorage Instance
     {
-        private Dictionary<string, IList> Data { get; }
+      get => _instance ?? new InMemoryStorage();
+      set => _instance = value;
+    }
 
-        private static InMemoryStorage _instance;
-        public static InMemoryStorage Instance
-        {
-            get => _instance ?? new InMemoryStorage();
-            set => _instance = value;
-        }
-
-        private InMemoryStorage()
-        {
-            Data = new Dictionary<string, IList>
+    private InMemoryStorage()
+    {
+      Data = new Dictionary<string, IEnumerable<ISaveableEntity>>
             {
-                { "Managers", new List<Employee>() },
-                { "Drivers", new List<Employee>() },
+                { "Manager", new List<Manager>() },
+                { "Driver", new List<Driver>() },
                 { "Goods", new List<Goods>() },
                 { "Warehouse", new List<Warehouse>() }
             };
-        }
-
-        public void DataInit()
-        {
-            
-        }
-
-        public IList GetDataByType(Type type)
-        {
-            return Data[type.FullName + "s"];
-        }
     }
+
+    public void DataInit()
+    {
+
+    }
+
+    public IEnumerable<ISaveableEntity> GetDataByType(Type type)
+    {
+      return Data[type.Name];
+    }
+  }
 }

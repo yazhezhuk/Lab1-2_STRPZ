@@ -2,13 +2,14 @@
 
 namespace Lab1Components
 {
-    class Program
+  class Program
+  {
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            Shop shop = new Shop("Rozetka");
-            shop.OrderBuilder("Vitaliy");
-        }
+      ShopController shopContorller = new ShopController(new DataRepository());
+      shopContorller.InitShop();
+
     }
+  }
 }
 

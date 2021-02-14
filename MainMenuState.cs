@@ -2,23 +2,29 @@
 
 namespace Lab1Components
 {
-    public class MainMenuState:IMenuState
+  public class MainMenuState : MenuState
+  {
+    public MainMenuState(ShopUserInterface userInterface) : base(userInterface) { }
+
+    public override void ButtonPressed(int key)
     {
-        private ShopUserInterface View { get; set; }
-        public MainMenuState(ShopUserInterface userInterface)
-        {
-            View = userInterface;
-        }
+      switch (key)
+      {
+        case 1:
+          View.PrintMenuItems(View.GoodsMenuOptions);
+          View.State = new GoodsMenuState(View);
+          break;
+        case 2:
+          View.State = new WarehouseMenuState(View);
+          View.PrintMenuItems(View.WarehouseMenuOptions);
+          break;
+        case 3:
+          View.Exit();
+          break;
+        default:
+          break;
 
-        public void ButtonPressed(ConsoleKey key)
-        {
-            switch (key)
-            {
-                case ConsoleKey.D1:
-                    View.
-
-
-            }
-        }
+      }
     }
+  }
 }
