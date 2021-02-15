@@ -1,39 +1,57 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace Lab1Components
 {
-  public class InMemoryStorage
-  {
-    private Dictionary<string, IEnumerable<ISaveableEntity>> Data { get; }
-
-    private static InMemoryStorage _instance;
-    public static InMemoryStorage Instance
+    public class InMemoryStorage
     {
-      get => _instance ?? new InMemoryStorage();
-      set => _instance = value;
-    }
+        private Dictionary<string, IEnumerable<ISaveableEntity>> Data { get; }
 
-    private InMemoryStorage()
-    {
-      Data = new Dictionary<string, IEnumerable<ISaveableEntity>>
+        private static InMemoryStorage _instance;
+
+        public static InMemoryStorage Instance
+        {
+            get => _instance ?? new InMemoryStorage();
+            set => _instance = value;
+        }
+
+        private InMemoryStorage()
+        {
+            Data = new Dictionary<string, IEnumerable<ISaveableEntity>>
             {
-                { "Manager", new List<Manager>() },
-                { "Driver", new List<Driver>() },
-                { "Goods", new List<Goods>() },
-                { "Warehouse", new List<Warehouse>() }
+                {
+                    "Manager", new List<Manager>
+                        {new Manager(0, "Anton", 21), new Manager(1, "Billy", 40)}
+                },
+                {
+                    "Driver", new List<Driver>
+                        {new Driver(0, "Evgeniy", 19), new Driver(1, "Nazar", 20)}
+                },
+                {
+                    "Goods", new List<Goods>
+                    {
+                        new Goods(0, GoodsType.Food, 100),
+                        new Goods(1, GoodsType.Electronics, 1000),
+                        new Goods(2, GoodsType.Furniture, 1500)
+                    }
+                },
+                {
+                    "Warehouse", new List<Warehouse>
+                    {
+                        new Warehouse(0, "First", 200),
+                        new Warehouse(1, "Second", 100),
+                        new Warehouse(2, "Third", 250),
+                        new Warehouse(3, "Fourth", 310),
+                        new Warehouse(4, "Fifth", 1002),
+                    }
+                },
+                { "Order", new List<Order>() }
             };
-    }
+        }
 
-    public void DataInit()
-    {
-
+        public IEnumerable<ISaveableEntity> GetDataByType(Type type)
+        {
+            return Data[type.Name];
+        }
     }
-
-    public IEnumerable<ISaveableEntity> GetDataByType(Type type)
-    {
-      return Data[type.Name];
-    }
-  }
 }

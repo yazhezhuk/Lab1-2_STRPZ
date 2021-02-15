@@ -6,6 +6,7 @@
         public IRepository<Manager> Managers { get; }
         public IRepository<Driver> Drivers { get; }
         public IRepository<Warehouse> Warehouses { get; }
+        public IRepository<Order> Orders { get; }
 
         public DataRepository()
         {
@@ -13,6 +14,7 @@
             Managers = new ShopRepository<Manager>();
             Drivers = new ShopRepository<Driver>();
             Warehouses = new ShopRepository<Warehouse>();
+            Orders = new ShopRepository<Order>();
         }
     }
 }

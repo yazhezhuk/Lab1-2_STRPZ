@@ -2,30 +2,28 @@
 
 namespace Lab1Components
 {
-    public class WarehouseMenuState : MenuState
+    public class OrderMenuState : MenuState
     {
-        public WarehouseMenuState(ShopUserInterface userInterface) : base(userInterface)
+        public OrderMenuState(ShopUserInterface userInterface) : base(userInterface)
         {
-            StateTitle = "Warehouse";
+            StateTitle = "Order";
         }
 
         public override void ButtonPressed(ConsoleKey key)
         {
-            switch (key)
+             switch (key)
             {
                 case ConsoleKey.D1:
-                    View.Controller.GetAllWarehouses()
-                      .ForEach(View.DisplayWarehouse);
+                    View.Controller.GetOrderInfo();
                     break;
 
                 case ConsoleKey.D2:
-                    SetViewState(new WarehouseSelectionState(View));
+                    View.Controller.ProcessOrder();
                     break;
 
                 case ConsoleKey.D3:
                     SetViewState(new MainMenuState(View));
                     break;
-
                 default:
                     break;
             }
@@ -33,7 +31,7 @@ namespace Lab1Components
 
         public override void PrintMenuOptions()
         {
-            View.PrintMenuItems(View.WarehouseMenuOptions, StateTitle);
+            View.PrintMenuItems(View.OrderMenuOptions, StateTitle);
         }
     }
 }

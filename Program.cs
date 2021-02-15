@@ -1,15 +1,11 @@
-﻿using System;
-
-namespace Lab1Components
+﻿namespace Lab1Components
 {
-  class Program
-  {
-    static void Main(string[] args)
+    internal class Program
     {
-      ShopController shopContorller = new ShopController(new DataRepository());
-      shopContorller.InitShop();
-
+        private static void Main(string[] args)
+        {
+            ShopController shopContorller = new ShopController(new DataRepository());
+            shopContorller.InitShop();
+        }
     }
-  }
 }
-

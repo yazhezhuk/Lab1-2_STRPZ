@@ -1,7 +1,4 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-
-namespace Lab1Components
+﻿namespace Lab1Components
 {
     public abstract class Employee : ISaveableEntity
     {
@@ -11,6 +8,7 @@ namespace Lab1Components
         public int Age { get; set; }
 
         public double LoadedHours { get; set; }
+
         public Employee(int id, string name, int age)
         {
             Id = id;

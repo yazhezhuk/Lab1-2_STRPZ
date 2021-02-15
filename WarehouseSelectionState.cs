@@ -3,17 +3,24 @@ using System.Collections.Generic;
 
 namespace Lab1Components
 {
-  public class WarehouseSelectionState : MenuState
-  {
-    public WarehouseSelectionState(ShopUserInterface userInterface) : base(userInterface)
-    { }
-
-    public override void ButtonPressed(int key)
+    public class WarehouseSelectionState : MenuState
     {
-      int selectedIndex = Convert.ToInt32(key);
-      View.Controller.SelectWarehouse(selectedIndex);
+        public WarehouseSelectionState(ShopUserInterface userInterface) : base(userInterface)
+        {
+            StateTitle = "Warehouse Selection";
+        }
+
+        public override void ButtonPressed(ConsoleKey key)
+        {
+            int selectedIndex = Convert.ToInt32(key - '0' - 1);
+            View.Controller.SelectWarehouse(selectedIndex);
+
+            SetViewState(new WarehouseMenuState(View));
+        }
+
+        public override void PrintMenuOptions()
+        {
+            View.PrintMenuItems(new List<string> { "Enter ¹ of warehouse: " }, StateTitle);
+        }
     }
-
-  }
 }
-

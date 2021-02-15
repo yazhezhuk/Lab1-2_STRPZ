@@ -1,72 +1,110 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mime;
 
 namespace Lab1Components
 {
-  public class ShopUserInterface
-  {
-    public MenuState State { get; set; }
-
-    public ShopController Controller { get; set; }
-
-    public List<string> MainMenuOptions { get; set; }
-    public List<string> GoodsMenuOptions { get; set; }
-    public List<string> WarehouseMenuOptions { get; set; }
-
-    public ShopUserInterface(ShopController controller)
+    public class ShopUserInterface
     {
-      Controller = controller;
-      MainMenuOptions = new List<string>(4);
-      MainMenuOptions.Add("1)Goods menu.");
-      MainMenuOptions.Add("2)Warehouse menu.");
-      MainMenuOptions.Add("3)Order menu.");
-      MainMenuOptions.Add("4)Exit.");
+        public MenuState State { get; set; }
 
-      GoodsMenuOptions = new List<string>(3);
-      GoodsMenuOptions.Add("1)View goods.");
-      GoodsMenuOptions.Add("2)Order goods.");
-      GoodsMenuOptions.Add("3)View already ordered.");
-      GoodsMenuOptions.Add("4)Return to previous menu.");
+        public ShopController Controller { get; set; }
 
-      WarehouseMenuOptions = new List<string>(3);
-      WarehouseMenuOptions.Add("1)View warehouses.");
-      WarehouseMenuOptions.Add("2)Select warehouse.");
-      WarehouseMenuOptions.Add("2)Return to previous menu.");
-    }
-    public void OperationFailed()
-    {
-      Console.WriteLine("Operation failed, try again.");
-    }
-    public void OperationSuccessful()
-    {
-      Console.WriteLine("Operation was succesful!");
-    }
+        public List<string> MainMenuOptions { get; set; }
+        public List<string> GoodsMenuOptions { get; set; }
+        public List<string> WarehouseMenuOptions { get; set; }
+        public List<string> OrderMenuOptions { get; set; }
 
-    public void DisplayGoods(Goods goods)
-    {
-      Console.WriteLine($"{goods.Id}) Type:{goods.Type} , price: {goods.Price}");
-    }
-    public void Start(string username)
-    {
-      Console.WriteLine($"Welcome to our shop, {username} \n");
-      while (true)
-      {
-        Console.WriteLine(5);
-        ConsoleKeyInfo info = Console.ReadKey();
-        int key = Convert.ToInt32(info.Key);
-        Console.WriteLine(5);
-        State.ButtonPressed(key);
-      }
-    }
+        public ShopUserInterface(ShopController controller)
+        {
+            Controller = controller;
+            MainMenuOptions = new List<string>(4)
+            {
+                "1)Goods menu.",
+                "2)Warehouse menu.",
+                "3)Order menu.",
+                "4)Exit."
+            };
 
-    public void Exit()
-    {
-    }
+            GoodsMenuOptions = new List<string>(3)
+            {
+                "1)View goods.",
+                "2)Order goods.",
+                "3)View already ordered.",
+                "4)Return to previous menu."
+            };
 
-    public void PrintMenuItems(List<string> items)
-    {
-      items.ForEach(Console.WriteLine);
-    }
+            WarehouseMenuOptions = new List<string>(3)
+            {
+                "1)View warehouses.",
+                "2)Select warehouse.",
+                "2)Return to previous menu."
+            };
 
-  }
+            OrderMenuOptions = new List<string>(4)
+            {
+                "1)View order info.",
+                "2)Process order.",
+                "3)Return to previous menu"
+            };
+            
+        }
+
+        public void OperationFailed()
+        {
+            Console.WriteLine("Operation failed, try again.");
+        }
+
+        public void OperationSuccessful()
+        {
+            Console.WriteLine("Operation was successful!");
+        }
+
+        public void DisplayOrder(Order order)
+        {
+
+            Console.WriteLine($"Id - {order.Id + 1} \n" +
+                              $"Estimate preparation and delivery time - {order.EstimateDeliveryTime} h. \n" +
+                              $"Total price - {order.Cost}$ \n");
+            
+        }
+
+        public void DisplayGoods(Goods goods)
+        {
+            Console.WriteLine($"Id - {goods.Id + 1} \n" +
+                              $"Type - {goods.Type} \n" +
+                              $"Price - {goods.Price} \n");
+        }
+
+        public void Start(string username)
+        {
+            Console.WriteLine($"Welcome to our shop, {username} \n");
+            while (true)
+            {
+                State.PrintMenuOptions();
+                ConsoleKey key = Console.ReadKey().Key;
+                Console.WriteLine();
+                State.ButtonPressed(key);
+            }
+        }
+
+        public void DisplayWarehouse(Warehouse warehouse)
+        {
+
+            Console.WriteLine($"Id - {warehouse.Id + 1}\n" +
+                              $"Name - {warehouse.Name} \n" +
+                              $"Distance i- {warehouse.Distance} \n");
+        }
+
+        public void Exit()
+        {
+            System.Environment.Exit(1);
+        }
+
+        public void PrintMenuItems(List<string> items, string menuName)
+        {
+            Console.WriteLine($"----------{menuName} Menu-----------");
+            items.ForEach(Console.WriteLine);
+        }
+    }
 }

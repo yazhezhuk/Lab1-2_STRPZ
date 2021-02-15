@@ -1,30 +1,42 @@
 ﻿using System;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Lab1Components
 {
-  public class MainMenuState : MenuState
-  {
-    public MainMenuState(ShopUserInterface userInterface) : base(userInterface) { }
-
-    public override void ButtonPressed(int key)
+    public class MainMenuState : MenuState
     {
-      switch (key)
-      {
-        case 1:
-          View.PrintMenuItems(View.GoodsMenuOptions);
-          View.State = new GoodsMenuState(View);
-          break;
-        case 2:
-          View.State = new WarehouseMenuState(View);
-          View.PrintMenuItems(View.WarehouseMenuOptions);
-          break;
-        case 3:
-          View.Exit();
-          break;
-        default:
-          break;
+        public MainMenuState(ShopUserInterface userInterface) : base(userInterface)
+        {
+            StateTitle = "Main";
+        }
 
-      }
+        public override void ButtonPressed(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    SetViewState(new GoodsMenuState(View));
+                    break;
+
+                case ConsoleKey.D2:
+                    SetViewState(new WarehouseMenuState(View));
+                    break;
+
+                case ConsoleKey.D3:
+                    SetViewState(new OrderMenuState(View));
+                    break;
+                case ConsoleKey.D4:
+                    View.Exit();
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public override void PrintMenuOptions()
+        {
+            View.PrintMenuItems(View.MainMenuOptions, StateTitle);
+        }
     }
-  }
 }

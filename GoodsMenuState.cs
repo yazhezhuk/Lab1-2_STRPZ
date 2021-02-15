@@ -2,34 +2,45 @@ using System;
 
 namespace Lab1Components
 {
-  public class GoodsMenuState : MenuState
-  {
-    private ShopUserInterface view;
-
-    public GoodsMenuState(ShopUserInterface view) : base(view) { }
-
-    public override void ButtonPressed(int key)
+    public class GoodsMenuState : MenuState
     {
-      switch (key)
-      {
-        case 1:
-          View.Controller.GetAllGoods()
-            .ForEach(View.DisplayGoods);
-          break;
-        case 2:
-          View.State = new GoodsSelectionState(View);
-          break;
-        case 3:
-          View.Controller.GetSelectedGoods()
-            .ForEach(View.DisplayGoods);
-          break;
-        case 4:
-          View.State = new MainMenuState(View);
-          break;
-        default:
-          break;
+        private ShopUserInterface view;
 
-      }
+        public GoodsMenuState(ShopUserInterface view) : base(view)
+        {
+            StateTitle = "Goods";
+        }
+
+        public override void ButtonPressed(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.D1:
+                    View.Controller.GetAllGoods()
+                      .ForEach(View.DisplayGoods);
+                    break;
+
+                case ConsoleKey.D2:
+                    View.State = new GoodsSelectionState(View);
+                    break;
+
+                case ConsoleKey.D3:
+                    View.Controller.GetSelectedGoods()
+                      .ForEach(View.DisplayGoods);
+                    break;
+
+                case ConsoleKey.D4:
+                    View.State = new MainMenuState(View);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+        public override void PrintMenuOptions()
+        {
+            View.PrintMenuItems(View.GoodsMenuOptions, StateTitle);
+        }
     }
-  }
 }

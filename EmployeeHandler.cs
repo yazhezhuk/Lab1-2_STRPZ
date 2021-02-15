@@ -1,13 +1,7 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Reflection.Metadata;
-using System.Runtime.CompilerServices;
-
-namespace Lab1Components
+﻿namespace Lab1Components
 {
-    public class EmployeeHandler : AbstractChainHandler
+    public class EmployeeHandler : ChainHandler
     {
-
         public EmployeeHandler(Employee employee)
         {
             ProcessingInstance = employee;
@@ -15,8 +9,11 @@ namespace Lab1Components
 
         public override Order ProcessOrder(Order order)
         {
+            order.ProcessingEmployees.Add(ProcessingInstance);
             ProcessingInstance.ProcessOrder(order);
-            return NextHandler.ProcessOrder(order);
+            return NextHandler != null 
+                ? NextHandler.ProcessOrder(order) 
+                : order;
         }
     }
 }

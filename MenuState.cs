@@ -2,18 +2,24 @@
 
 namespace Lab1Components
 {
-  public abstract class MenuState
-  {
-    protected ShopUserInterface View { get; set; }
-    public MenuState(ShopUserInterface userInterface)
+    public abstract class MenuState
     {
-      View = userInterface;
-    }
+        public string StateTitle { get; set; }
 
-    protected void SetViewState(MenuState state)
-    {
-      View.State = state;
+        protected ShopUserInterface View { get; set; }
+
+        protected MenuState(ShopUserInterface userInterface)
+        {
+            View = userInterface;
+        }
+
+        protected void SetViewState(MenuState state)
+        {
+            View.State = state;
+        }
+
+        public abstract void ButtonPressed(ConsoleKey key);
+
+        public abstract void PrintMenuOptions();
     }
-    public abstract void ButtonPressed(int key);
-  }
 }
