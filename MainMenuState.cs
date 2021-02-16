@@ -5,7 +5,7 @@ namespace Lab1Components
 {
     public class MainMenuState : MenuState
     {
-        public MainMenuState(ShopUserInterface userInterface) : base(userInterface)
+        public MainMenuState(ShopConsoleView userInterface) : base(userInterface)
         {
             StateTitle = "Main";
         }
@@ -28,7 +28,6 @@ namespace Lab1Components
                 case ConsoleKey.D4:
                     View.Exit();
                     break;
-
                 default:
                     break;
             }

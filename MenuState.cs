@@ -6,9 +6,9 @@ namespace Lab1Components
     {
         public string StateTitle { get; set; }
 
-        protected ShopUserInterface View { get; set; }
+        protected ShopConsoleView View { get; set; }
 
-        protected MenuState(ShopUserInterface userInterface)
+        protected MenuState(ShopConsoleView userInterface)
         {
             View = userInterface;
         }

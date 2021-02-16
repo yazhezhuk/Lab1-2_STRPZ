@@ -4,7 +4,7 @@ using System.Net.Mime;
 
 namespace Lab1Components
 {
-    public class ShopUserInterface
+    public class ShopConsoleView
     {
         public MenuState State { get; set; }
 
@@ -15,9 +15,13 @@ namespace Lab1Components
         public List<string> WarehouseMenuOptions { get; set; }
         public List<string> OrderMenuOptions { get; set; }
 
-        public ShopUserInterface(ShopController controller)
+        public ShopConsoleView()
         {
-            Controller = controller;
+            var context = new ApplicationContext();
+            var model = new ShopModel(context);
+
+            Controller = new ShopController(model,this);
+            State = new MainMenuState(this);
             MainMenuOptions = new List<string>(4)
             {
                 "1)Goods menu.",
@@ -43,9 +47,8 @@ namespace Lab1Components
 
             OrderMenuOptions = new List<string>(4)
             {
-                "1)View order info.",
-                "2)Process order.",
-                "3)Return to previous menu"
+                "1)Process order.",
+                "2)Return to previous menu"
             };
             
         }

@@ -4,7 +4,7 @@ namespace Lab1Components
 {
     public class OrderMenuState : MenuState
     {
-        public OrderMenuState(ShopUserInterface userInterface) : base(userInterface)
+        public OrderMenuState(ShopConsoleView userInterface) : base(userInterface)
         {
             StateTitle = "Order";
         }
@@ -14,14 +14,10 @@ namespace Lab1Components
              switch (key)
             {
                 case ConsoleKey.D1:
-                    View.Controller.GetOrderInfo();
-                    break;
-
-                case ConsoleKey.D2:
                     View.Controller.ProcessOrder();
                     break;
 
-                case ConsoleKey.D3:
+                case ConsoleKey.D2:
                     SetViewState(new MainMenuState(View));
                     break;
                 default:

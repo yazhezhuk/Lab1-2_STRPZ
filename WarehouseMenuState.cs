@@ -4,7 +4,7 @@ namespace Lab1Components
 {
     public class WarehouseMenuState : MenuState
     {
-        public WarehouseMenuState(ShopUserInterface userInterface) : base(userInterface)
+        public WarehouseMenuState(ShopConsoleView userInterface) : base(userInterface)
         {
             StateTitle = "Warehouse";
         }
@@ -15,7 +15,7 @@ namespace Lab1Components
             {
                 case ConsoleKey.D1:
                     View.Controller.GetAllWarehouses()
-                      .ForEach(View.DisplayWarehouse);
+                        .ForEach(View.DisplayWarehouse);
                     break;
 
                 case ConsoleKey.D2:

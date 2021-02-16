@@ -5,7 +5,7 @@ namespace Lab1Components
 {
     public class GoodsSelectionState : MenuState
     {
-        public GoodsSelectionState(ShopUserInterface userInterface) : base(userInterface)
+        public GoodsSelectionState(ShopConsoleView userInterface) : base(userInterface)
         {
             StateTitle = "Goods Selection";
         }

@@ -1,20 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Lab1Components
 {
-    public class ShopRepository<T> : IRepository<T> where T : ISaveableEntity
+    public class GenericRepository<T> : IRepository<T> where T : ISaveableEntity
     {
-        private readonly List<T> DataStorage = (List<T>)InMemoryStorage.Instance.GetDataByType(typeof(T));
+        private List<T> DataStorage { get; } = (List<T>)InMemoryDataStub.
+                                                Instance.GetDataByType(typeof(T));
 
         public virtual void Delete(T obj)
         {
             DataStorage.Remove(obj);
         }
 
-        public virtual List<T> GetAll()
+        public virtual List<T> GetAll(Predicate<T> filter = null)
         {
-            return DataStorage;
+            return filter != null ? DataStorage.FindAll(filter) : DataStorage;
         }
 
         public virtual T GetById(int id)
@@ -29,7 +32,7 @@ namespace Lab1Components
 
         public virtual void Update(T obj)
         {
-            throw new InvalidOperationException();
+
         }
     }
 }

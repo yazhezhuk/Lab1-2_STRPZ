@@ -4,8 +4,8 @@
     {
         private static void Main(string[] args)
         {
-            ShopController shopContorller = new ShopController(new DataRepository());
-            shopContorller.InitShop();
+            var view = new ShopConsoleView();
+            view.Start("Vitalich");
         }
     }
 }

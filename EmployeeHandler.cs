@@ -9,7 +9,6 @@
 
         public override Order ProcessOrder(Order order)
         {
-            order.ProcessingEmployees.Add(ProcessingInstance);
             ProcessingInstance.ProcessOrder(order);
             return NextHandler != null 
                 ? NextHandler.ProcessOrder(order) 

@@ -4,9 +4,9 @@ namespace Lab1Components
 {
     public class GoodsMenuState : MenuState
     {
-        private ShopUserInterface view;
+        private ShopConsoleView view;
 
-        public GoodsMenuState(ShopUserInterface view) : base(view)
+        public GoodsMenuState(ShopConsoleView view) : base(view)
         {
             StateTitle = "Goods";
         }

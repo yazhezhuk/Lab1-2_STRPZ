@@ -7,19 +7,19 @@ namespace Lab1Components
     {
         public int Id { get; set; } = 0;
 
-        public Warehouse Warehouse { get; }
-        public List<Goods> Goods { get; }
-
-        public List<Employee> ProcessingEmployees { get; set; }
+        public Driver Driver { get; set; }
+        public Manager Manager { get; set; }
+        public Warehouse Warehouse { get; set; }
+        public List<Goods> Goods { get; set; }
 
         public double EstimateDeliveryTime { get; set; }
 
-        public Order(int id,List<Goods> goods, Warehouse warehouse)
+        public Order(Driver driver, Manager manager, Warehouse warehouse, List<Goods> goods)
         {
-            Id = id;
+            Driver = driver;
+            Manager = manager;
             Warehouse = warehouse;
             Goods = goods;
-            ProcessingEmployees = new List<Employee>();
         }
 
         public double Cost

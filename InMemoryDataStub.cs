@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Lab1Components
 {
-    public class InMemoryStorage
+    public class InMemoryDataStub
     {
         private Dictionary<string, IEnumerable<ISaveableEntity>> Data { get; }
 
-        private static InMemoryStorage _instance;
+        private static InMemoryDataStub _instance;
 
-        public static InMemoryStorage Instance
+        public static InMemoryDataStub Instance
         {
-            get => _instance ?? new InMemoryStorage();
+            get => _instance ?? new InMemoryDataStub();
             set => _instance = value;
         }
 
-        private InMemoryStorage()
+        private InMemoryDataStub()
         {
             Data = new Dictionary<string, IEnumerable<ISaveableEntity>>
             {
@@ -45,7 +46,9 @@ namespace Lab1Components
                         new Warehouse(4, "Fifth", 1002),
                     }
                 },
-                { "Order", new List<Order>() }
+                {
+                    "Order", new List<Order>()
+                }
             };
         }
 
