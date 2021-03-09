@@ -13,12 +13,9 @@ namespace DAL
         public List<WarehouseEntity> WarehousesData { get; set; }
         public  List<EmployeeEntity> EmployeesData { get; set; }
 
-        private static InMemoryDataStub _instance = new InMemoryDataStub();
+        private static InMemoryDataStub _instance;
 
-        public static InMemoryDataStub Instance
-        {
-            get => _instance;
-        }
+        public static InMemoryDataStub Instance => _instance ?? (_instance = new InMemoryDataStub());
 
         public int GoodsId
         {
