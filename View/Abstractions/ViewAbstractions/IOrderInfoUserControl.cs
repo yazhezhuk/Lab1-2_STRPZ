@@ -8,7 +8,6 @@ namespace View.Abstractions.ViewAbstractions
 {
     public interface IOrderInfoUserControl : IOrderUserControl
     {
-        public event EventHandler DataRequested;
         public event EventHandler OrderCommitRequested;
 
         void ShowWarehouse(WarehouseModel warehouse);

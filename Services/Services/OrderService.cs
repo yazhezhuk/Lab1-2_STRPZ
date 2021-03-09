@@ -15,11 +15,11 @@ namespace Services.Services
 {
     public class OrderService : IOrderService
     {
-        private UnitOfWork UnitOfWork { get; }
+        private IUnitOfWork UnitOfWork { get; }
         private OrderMapper OrderMapper { get; }
         private GoodsMapper GoodsMapper { get; }
 
-        public OrderService(UnitOfWork context)
+        public OrderService(IUnitOfWork context)
         {
             UnitOfWork = context;
             OrderMapper = new OrderMapper();
@@ -59,22 +59,21 @@ namespace Services.Services
         {
             var orderGoods = order.Goods;
             var orderEntity = OrderMapper.ToEntity(order);
-            orderGoods.ForEach(goods => UnitOfWork.OrderInfos.Add(
+            orderGoods.ForEach(goods => UnitOfWork.OrderInfos.AddOrUpdate(
                     new OrderItemEntity
                     {
-                        Id = InMemoryDataStub.Instance.OrderId,
                         GoodsId = goods.Id,
                         OrderId = orderEntity.Id
                     }));
 
-            UnitOfWork.Order.Add(orderEntity);
+            UnitOfWork.Orders.AddOrUpdate(orderEntity);
         }
 
         public OrderModel Get(int id)
         {
             IService<WarehouseModel> warehouseService = new WarehouseService(UnitOfWork);
 
-            var orderDbEntity = UnitOfWork.Order.GetById(id);
+            var orderDbEntity = UnitOfWork.Orders.GetById(id);
             var orderModel = OrderMapper.ToModel(orderDbEntity);
             orderModel.Goods = orderDbEntity.Goods
                 .Select(goods => GoodsMapper.ToModel(goods))
@@ -85,12 +84,12 @@ namespace Services.Services
 
         public void Delete(OrderModel item)
         {
-            UnitOfWork.Order.Delete(OrderMapper.ToEntity(item).Id);
+            UnitOfWork.Orders.Delete(OrderMapper.ToEntity(item).Id);
         }
 
         public List<OrderModel> GetAll()
         {
-            return UnitOfWork.Order
+            return UnitOfWork.Orders
                 .GetAll()
                 .Select(OrderMapper.ToModel)
                 .ToList();

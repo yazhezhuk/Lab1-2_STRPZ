@@ -7,13 +7,13 @@ using Services.Abstractions;
 
 namespace Services.Services
 {
-    public class WarehouseService : IService<WarehouseModel>
+    public class WarehouseService : IWarehouseService
     {
-        private UnitOfWork Context { get; set; }
+        private IUnitOfWork Context { get; set; }
         private WarehouseMapper WarehouseMapper { get; }
         
         
-        public WarehouseService(UnitOfWork context)
+        public WarehouseService(IUnitOfWork context)
         {
             Context = context;
             WarehouseMapper = new WarehouseMapper();
@@ -21,7 +21,7 @@ namespace Services.Services
 
         public void Add(WarehouseModel item)
         {
-            Context.Warehouses.Add(WarehouseMapper.ToEntity(item));
+            Context.Warehouses.AddOrUpdate(WarehouseMapper.ToEntity(item));
         }
 
         public WarehouseModel Get(int id)

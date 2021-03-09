@@ -1,4 +1,6 @@
-﻿using Types;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Types;
 
 namespace Entities
 {
@@ -11,5 +13,7 @@ namespace Entities
 
         public Speciality Speciality { get; set; }
         public int Age { get; set; }
+        
+        public virtual ICollection<OrderEntity> Orders { get; set; }
     }
 }

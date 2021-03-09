@@ -8,11 +8,11 @@ using System.Linq;
 
 namespace Services.Services
 {
-    public class GoodsService:IService<GoodsModel>
+    public class GoodsService: IGoodsService
     {
-        private UnitOfWork Context { get; set; }
+        private IUnitOfWork Context { get; set; }
         private GoodsMapper Mapper { get; }
-        public GoodsService(UnitOfWork context)
+        public GoodsService(IUnitOfWork context)
         {
             Context = context;
             Mapper = new GoodsMapper();
@@ -20,7 +20,7 @@ namespace Services.Services
 
         public void Add(GoodsModel item)
         {
-            Context.Goods.Add(Mapper.ToEntity(item));
+            Context.Goods.AddOrUpdate(Mapper.ToEntity(item));
         }
 
         public GoodsModel Get(int id)

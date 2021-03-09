@@ -13,14 +13,14 @@ namespace Services.Services
 {
     public class StaffService : IStaffService
     {
-        private UnitOfWork Context { get; }
+        private IUnitOfWork UnitOfWork { get; }
         private EmployeeMapper EmployeeMapper { get; }
         private OrderMapper OrderMapper  { get; }
 
 
-        public StaffService(UnitOfWork context)
+        public StaffService(IUnitOfWork unitOfWork)
         {
-            Context = context;
+            UnitOfWork = unitOfWork;
             EmployeeMapper = new EmployeeMapper();
             OrderMapper = new OrderMapper();
         }
@@ -36,53 +36,41 @@ namespace Services.Services
 
         public List<EmployeeModel> GetAll(Predicate<EmployeeEntity> criteria)
         { 
-            var employees = Context.Employees
+            var employees = UnitOfWork.Employees
                 .GetAll(criteria)
                 .Select(EmployeeMapper.ToModel)
                 .ToList();
-            employees.ForEach(employee => employee.Orders = GetEmployeeOrders(employee.Id));
 
             return employees;
         }
 
         public void Add(EmployeeModel item)
         {
-            Context.Employees
-                .Add(EmployeeMapper.ToEntity(item));
+            UnitOfWork.Employees
+                .AddOrUpdate(EmployeeMapper.ToEntity(item));
         }
 
         public EmployeeModel Get(int id)
         {
-            var employeeModel = EmployeeMapper.ToModel(Context.Employees
+            var employeeModel = EmployeeMapper.ToModel(UnitOfWork.Employees
                 .GetById(id));
-            employeeModel.Orders = GetEmployeeOrders(id);
 
             return employeeModel;
         }
 
-        public List<OrderModel> GetEmployeeOrders(int id)
-        {
-            return Context.Employees
-                .GetEmployeeOrders(id)
-                .Select(order => OrderMapper.ToModel(order))
-                .ToList();
-        }
-
         public void Delete(EmployeeModel item)
         {
-            Context.Employees.Delete(EmployeeMapper.ToEntity(item).Id);
+            UnitOfWork.Employees.Delete(EmployeeMapper.ToEntity(item).Id);
         }
 
         public void Update(EmployeeModel employee)
         {
-            var employeeEntity = EmployeeMapper.ToEntity(employee);
-            Context.Employees.Delete(employeeEntity.Id);
-            Context.Employees.Add(employeeEntity);
+            UnitOfWork.Employees.AddOrUpdate(EmployeeMapper.ToEntity(employee));
         }
 
         public List<EmployeeModel> GetAll()
         {
-            return Context.Employees.GetAll()
+            return UnitOfWork.Employees.GetAll()
                 .Select(EmployeeMapper.ToModel)
                 .ToList();
         }

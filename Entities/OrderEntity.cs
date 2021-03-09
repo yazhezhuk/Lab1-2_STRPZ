@@ -14,9 +14,9 @@ namespace Entities
         public DateTime TimeOfCreation { get; set; }
         public TimeSpan EstimateProcessTime { get; set; }
 
-        public bool Completed { get; set; } = false;
+        public bool Completed { get; set; }
 
-        public Collection<EmployeeEntity> Employees { get; }
-        public Collection<GoodsEntity> Goods { get; }
+        public virtual Collection<EmployeeEntity> Employees { get; }
+        public virtual Collection<GoodsEntity> Goods { get; }
     }
 }

@@ -8,6 +8,8 @@ namespace Domain.OrderDomain
 {
     public class OrderModel
     {
+        public int Id { get; set; }
+        
         public int WarehouseId { get; set; }
         
 

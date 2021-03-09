@@ -1,5 +1,4 @@
-﻿using DAL;
-using Domain.OrderDomain;
+﻿using Domain.OrderDomain;
 using Entities;
 
 namespace Mappers
@@ -10,7 +9,7 @@ namespace Mappers
         {
             return new OrderEntity
             {
-                Id = InMemoryDataStub.Instance.OrderId,
+                Id = order.Id,
                 WarehouseId = order.WarehouseId,
                 ManagerId = order.ManagerId,
                 DriverId = order.DriverId,

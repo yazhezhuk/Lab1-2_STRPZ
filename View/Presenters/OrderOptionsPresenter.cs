@@ -1,4 +1,5 @@
 ﻿using System;
+using Services.Abstractions;
 using Services.Services;
 using View.Abstractions.PresentersAbstractions;
 using View.Views;
@@ -7,16 +8,16 @@ namespace View.Presenters
 {
     public class OrderOptionsPresenter : IOptionsPresenter
     {
-        private readonly GoodsService _goodsService;
-        private readonly WarehouseService _warehouseService;
-        private readonly StaffService _staffService;
+        private readonly IGoodsService _goodsService;
+        private readonly IWarehouseService _warehouseService;
+        private readonly IStaffService _staffService;
         
         private readonly OrderOptionsView _view;
 
         public OrderOptionsPresenter(OrderOptionsView view,
-            GoodsService goodsService,
-            WarehouseService warehouseService,
-            StaffService staffService)        
+            IGoodsService goodsService,
+            IWarehouseService warehouseService,
+            IStaffService staffService)        
         {
             _goodsService = goodsService;
             _warehouseService = warehouseService;

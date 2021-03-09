@@ -22,13 +22,7 @@ namespace View.Presenters
         private IOptionsPresenter OptionsMenuPresenter { get; set; }
         private IOrderInfoPresenter InfoMenuPresenter { get; set; }
 
-        public void SubscribeOnViewEvents()
-        {
-            _view.OrderOptionsMenuSelected += OrderOptionsClicked;
-            _view.OrderInfoMenuSelected += OrderInfoClicked;
-        }
-
-        public MainPresenter(Form view, UnitOfWork unit)
+        public MainPresenter(Form view, IUnitOfWork unit)
         {
             _goodsService = new GoodsService(unit);
             _warehouseService = new WarehouseService(unit);
@@ -37,6 +31,12 @@ namespace View.Presenters
 
             _view = (MainMenuView) view;
             SubscribeOnViewEvents();
+        }
+        
+        public void SubscribeOnViewEvents()
+        {
+            _view.OrderOptionsMenuSelected += OrderOptionsClicked;
+            _view.OrderInfoMenuSelected += OrderInfoClicked;
         }
 
         private void OrderOptionsClicked(object sender, EventArgs args)

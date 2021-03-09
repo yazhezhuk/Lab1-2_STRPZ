@@ -20,7 +20,7 @@ namespace View
             Application.SetCompatibleTextRenderingDefault(false);
 
             var mainForm = new MainMenuView();
-            var presenter = new MainPresenter(mainForm, new UnitOfWork());
+            var presenter = new MainPresenter(mainForm, new UnitOfWork(new ShopContext()));
 
             Application.Run(mainForm);
         }

@@ -15,8 +15,6 @@ namespace View.Presenters
     public class OrderInfoPresenter : IOrderInfoPresenter
     {
         private IOrderService OrderService { get; set; }
-        private GoodsService GoodsService { get; set; }
-        private WarehouseService WarehouseService { get; set; }
 
         private IOrderInfoUserControl View { get; set; }
 
@@ -29,15 +27,9 @@ namespace View.Presenters
         {
             View = view;
             OrderService = orderService;
-            GoodsService = goodsService;
-            WarehouseService = warehouseService;
 
             SubscribeOnViewEvents();
             View.PresenterCreated();
-        }
-
-        public void GetOrderProcessTimeBtnClicked(object sender, EventArgs args)
-        {
         }
 
         private void OrderSubmitClicked(object sender, EventArgs args)
@@ -64,8 +56,7 @@ namespace View.Presenters
             View.PendingOrder = order;
 
             View.ShowOrder(order);
-
-
+            
             View.UpdateChanges();
         }
 

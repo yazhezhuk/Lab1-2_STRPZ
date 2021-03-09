@@ -11,16 +11,17 @@ namespace View.Views
 {
     public class OrderOptionsView : UserControl, IOrderOptionsView
     {
-        
-        private MainMenuView ParentView { get; set; }
+        public event EventHandler DataRequested;
 
-        public event EventHandler DataRequested = delegate {  };
+        private MainMenuView ParentView { get; set; }
+        
 
         public OrderOptionsView(MainMenuView parentView)
         {
             InitializeComponent();
             ParentView = parentView;
         }
+
 
         public void UpdateChanges()
         {
