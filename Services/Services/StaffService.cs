@@ -14,10 +14,15 @@ namespace Services.Services
     public class StaffService : IStaffService
     {
         private UnitOfWork Context { get; }
+        private EmployeeMapper EmployeeMapper { get; }
+        private OrderMapper OrderMapper  { get; }
+
 
         public StaffService(UnitOfWork context)
         {
             Context = context;
+            EmployeeMapper = new EmployeeMapper();
+            OrderMapper = new OrderMapper();
         }
 
         public EmployeeModel GetLeastBusyEmployee(Speciality spec)
@@ -43,14 +48,13 @@ namespace Services.Services
         public void Add(EmployeeModel item)
         {
             Context.Employees
-                .Add(item.ToEntity());
+                .Add(EmployeeMapper.ToEntity(item));
         }
 
         public EmployeeModel Get(int id)
         {
-            var employeeModel = Context.Employees
-                .GetById(id)
-                .ToModel();
+            var employeeModel = EmployeeMapper.ToModel(Context.Employees
+                .GetById(id));
             employeeModel.Orders = GetEmployeeOrders(id);
 
             return employeeModel;
@@ -60,18 +64,18 @@ namespace Services.Services
         {
             return Context.Employees
                 .GetEmployeeOrders(id)
-                .Select(order => order.ToModel())
+                .Select(order => OrderMapper.ToModel(order))
                 .ToList();
         }
 
         public void Delete(EmployeeModel item)
         {
-            Context.Employees.Delete(item.ToEntity().Id);
+            Context.Employees.Delete(EmployeeMapper.ToEntity(item).Id);
         }
 
         public void Update(EmployeeModel employee)
         {
-            var employeeEntity = employee.ToEntity();
+            var employeeEntity = EmployeeMapper.ToEntity(employee);
             Context.Employees.Delete(employeeEntity.Id);
             Context.Employees.Add(employeeEntity);
         }

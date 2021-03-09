@@ -10,32 +10,35 @@ namespace Services.Services
     public class WarehouseService : IService<WarehouseModel>
     {
         private UnitOfWork Context { get; set; }
-
+        private WarehouseMapper WarehouseMapper { get; }
+        
+        
         public WarehouseService(UnitOfWork context)
         {
             Context = context;
+            WarehouseMapper = new WarehouseMapper();
         }
 
         public void Add(WarehouseModel item)
         {
-            Context.Warehouses.Add(item.ToEntity());
+            Context.Warehouses.Add(WarehouseMapper.ToEntity(item));
         }
 
         public WarehouseModel Get(int id)
         {
-            return Context.Warehouses.GetById(id).ToModel();
+            return WarehouseMapper.ToModel(Context.Warehouses.GetById(id));
         }
 
         public List<WarehouseModel> GetAll()
         {
             return Context.Warehouses.GetAll()
-                .Select(warehouse => warehouse.ToModel())
+                .Select(warehouse => WarehouseMapper.ToModel(warehouse))
                 .ToList();
         }
 
         public void Delete(WarehouseModel item)
         {
-            Context.Warehouses.Delete(item.ToEntity().Id);
+            Context.Warehouses.Delete(WarehouseMapper.ToEntity(item).Id);
         }
     }
 }

@@ -4,9 +4,9 @@ using Entities;
 
 namespace Mappers
 {
-    public static class OrderMapper
+    public class OrderMapper
     {
-        public static OrderEntity ToEntity(this OrderModel order)
+        public OrderEntity ToEntity(OrderModel order)
         {
             return new OrderEntity
             {
@@ -20,7 +20,7 @@ namespace Mappers
             };
         }
 
-        public static OrderModel ToModel(this OrderEntity order)
+        public OrderModel ToModel(OrderEntity order)
         {
             return new OrderModel
             {

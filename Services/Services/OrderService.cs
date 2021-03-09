@@ -16,10 +16,14 @@ namespace Services.Services
     public class OrderService : IOrderService
     {
         private UnitOfWork UnitOfWork { get; }
+        private OrderMapper OrderMapper { get; }
+        private GoodsMapper GoodsMapper { get; }
 
         public OrderService(UnitOfWork context)
         {
             UnitOfWork = context;
+            OrderMapper = new OrderMapper();
+            GoodsMapper = new GoodsMapper();
         }
 
         public void ProcessOrder(OrderModel order)
@@ -54,7 +58,7 @@ namespace Services.Services
         public void Add(OrderModel order)
         {
             var orderGoods = order.Goods;
-            var orderEntity = order.ToEntity();
+            var orderEntity = OrderMapper.ToEntity(order);
             orderGoods.ForEach(goods => UnitOfWork.OrderInfos.Add(
                     new OrderItemEntity
                     {
@@ -71,9 +75,9 @@ namespace Services.Services
             IService<WarehouseModel> warehouseService = new WarehouseService(UnitOfWork);
 
             var orderDbEntity = UnitOfWork.Order.GetById(id);
-            var orderModel = orderDbEntity.ToModel();
+            var orderModel = OrderMapper.ToModel(orderDbEntity);
             orderModel.Goods = orderDbEntity.Goods
-                .Select(goods => goods.ToModel())
+                .Select(goods => GoodsMapper.ToModel(goods))
                 .ToList();
 
             return orderModel;
@@ -81,7 +85,7 @@ namespace Services.Services
 
         public void Delete(OrderModel item)
         {
-            UnitOfWork.Order.Delete(item.ToEntity().Id);
+            UnitOfWork.Order.Delete(OrderMapper.ToEntity(item).Id);
         }
 
         public List<OrderModel> GetAll()

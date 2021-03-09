@@ -3,9 +3,9 @@ using Entities;
 
 namespace Mappers
 {
-    public static class WarehouseMapper
+    public class WarehouseMapper
     {
-        public static WarehouseEntity ToEntity(this WarehouseModel warehouse)
+        public WarehouseEntity ToEntity(WarehouseModel warehouse)
         {
             return new WarehouseEntity
             {
@@ -14,7 +14,7 @@ namespace Mappers
             };
         }
 
-        public static WarehouseModel ToModel(this WarehouseEntity warehouse)
+        public WarehouseModel ToModel(WarehouseEntity warehouse)
         {
             return new WarehouseModel
             {

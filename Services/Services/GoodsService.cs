@@ -11,31 +11,33 @@ namespace Services.Services
     public class GoodsService:IService<GoodsModel>
     {
         private UnitOfWork Context { get; set; }
+        private GoodsMapper Mapper { get; }
         public GoodsService(UnitOfWork context)
         {
             Context = context;
+            Mapper = new GoodsMapper();
         }
 
         public void Add(GoodsModel item)
         {
-            Context.Goods.Add(item.ToEntity());
+            Context.Goods.Add(Mapper.ToEntity(item));
         }
 
         public GoodsModel Get(int id)
         {
-            return Context.Goods.GetById(id).ToModel();
+            return Mapper.ToModel(Context.Goods.GetById(id));
         }
 
         public List<GoodsModel> GetAll()
         {
             return Context.Goods.GetAll()
-                .Select(goods => goods.ToModel())
+                .Select(goods => Mapper.ToModel(goods))
                 .ToList();
         }
 
         public void Delete(GoodsModel item)
         {
-            Context.Goods.Delete(item.ToEntity().Id);
+            Context.Goods.Delete(Mapper.ToEntity(item).Id);
         }
     }
 }

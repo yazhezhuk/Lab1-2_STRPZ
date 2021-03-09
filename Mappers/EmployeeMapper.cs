@@ -4,9 +4,9 @@ using Entities;
 
 namespace Mappers
 {
-    public static class EmployeeMapper
+    public class EmployeeMapper
     {
-        public static EmployeeEntity ToEntity(this EmployeeModel employee)
+        public EmployeeEntity ToEntity(EmployeeModel employee)
         {
             return new EmployeeEntity
             {
@@ -18,7 +18,7 @@ namespace Mappers
             };
         }
 
-        public static EmployeeModel ToModel(this EmployeeEntity employee)
+        public EmployeeModel ToModel(EmployeeEntity employee)
         {
             var factory = new EmployeeFactory();
             var convertedEmployee = factory.GetEmployee(employee.Speciality);

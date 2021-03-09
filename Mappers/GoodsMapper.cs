@@ -4,9 +4,9 @@ using Entities;
 
 namespace Mappers
 {
-    public static class GoodsMapper
+    public class GoodsMapper
     {
-        public static GoodsEntity ToEntity(this GoodsModel goods)
+        public GoodsEntity ToEntity( GoodsModel goods)
         {
             return new GoodsEntity
             {
@@ -17,7 +17,7 @@ namespace Mappers
             };
         }
 
-        public static GoodsModel ToModel(this GoodsEntity goods)
+        public GoodsModel ToModel(GoodsEntity goods)
         {
             var factory = new GoodsFactory();
             var convertedGoods = factory.GetGoods(goods.Type);
