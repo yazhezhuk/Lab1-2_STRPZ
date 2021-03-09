@@ -9,21 +9,14 @@ using View.Abstractions.ViewAbstractions;
 
 namespace View.Views
 {
-    public class OrderOptionsMenuView : UserControl, IOrderOptionsMenuView
+    public class OrderOptionsView : UserControl, IOrderOptionsView
     {
-        private Label goodsLbl;
-        private CheckedListBox goodsClb;
-        private Button processOrderBtn;
-        private Label warehousesLbl;
-        private CheckedListBox warehousesClb;
-        private Button refreshBtn;
-        private Button addGoodsBtn;
-        private Button warehouseSelectionBtn;
+        
         private MainMenuView ParentView { get; set; }
 
-        public event EventHandler DataChanged;
+        public event EventHandler DataRequested = delegate {  };
 
-        public OrderOptionsMenuView(MainMenuView parentView)
+        public OrderOptionsView(MainMenuView parentView)
         {
             InitializeComponent();
             ParentView = parentView;
@@ -36,12 +29,31 @@ namespace View.Views
 
         public void ShowAllWarehouses(List<WarehouseModel> warehouse)
         {
+            var formattedWarehouses = warehouse
+                .Select(item =>
+                    "Name: " + item.Name +
+                    " Distance: " + item.Distance)
+                .ToArray();
             warehousesClb.DataSource = warehouse;
+            warehousesClb.Size = warehousesClb.PreferredSize;
+
         }
 
         public void ShowAllGoods(List<GoodsModel> goods)
         {
+            var formattedGoods = goods
+                .Select(item =>
+                    "Name: " + item.Name +
+                    " Price: " + item.Price +
+                    " Type: " + item.Type)
+                .ToArray();
             goodsClb.DataSource = goods;
+            goodsClb.Size = goodsClb.PreferredSize;
+        }
+
+        public void PresenterCreated()
+        {
+            DataRequested.Invoke(this, EventArgs.Empty);
         }
 
         public void SetSelectedGoods(List<GoodsModel> goods)
@@ -56,18 +68,18 @@ namespace View.Views
 
         private void RefreshBtnClick(object sender, EventArgs args)
         {
-            DataChanged.Invoke(this, new EventArgs());
+            DataRequested.Invoke(this, new EventArgs());
         }
 
         private void AddGoodsBtnClick(object sender, EventArgs args)
         {
-            var selectedGoods = new List<GoodsModel>(goodsClb.SelectedItems.Cast<GoodsModel>());
+            var selectedGoods = new List<GoodsModel>(goodsClb.CheckedItems.Cast<GoodsModel>());
             SetSelectedGoods(selectedGoods);
         }
 
         private void AddWarehouseBtnClick(object sender, EventArgs args)
         {
-            var selectedWarehouse = goodsClb.SelectedItem as WarehouseModel;
+            var selectedWarehouse = warehousesClb.SelectedItem as WarehouseModel;
             SetSelectedWarehouse(selectedWarehouse);
         }
 
@@ -75,7 +87,6 @@ namespace View.Views
         {
             goodsLbl = new Label();
             goodsClb = new CheckedListBox();
-            processOrderBtn = new Button();
             warehousesLbl = new Label();
             warehousesClb = new CheckedListBox();
             refreshBtn = new Button();
@@ -86,7 +97,7 @@ namespace View.Views
             // goodsLbl
             // 
             goodsLbl.AutoSize = true;
-            goodsLbl.Location = new System.Drawing.Point(13, 28);
+            goodsLbl.Location = new System.Drawing.Point(10, 5);
             goodsLbl.Margin = new Padding(4, 0, 4, 0);
             goodsLbl.Name = "goodsLbl";
             goodsLbl.Size = new System.Drawing.Size(59, 13);
@@ -96,24 +107,16 @@ namespace View.Views
             // goodsClb
             // 
             goodsClb.FormattingEnabled = true;
-            goodsClb.Location = new System.Drawing.Point(16, 44);
+            goodsClb.Location = new System.Drawing.Point(9, 31);
             goodsClb.Name = "goodsClb";
-            goodsClb.Size = new System.Drawing.Size(120, 79);
+            goodsClb.Size = new System.Drawing.Size(300, 79);
             goodsClb.TabIndex = 16;
-            // 
-            // processOrderBtn
-            // 
-            processOrderBtn.Location = new System.Drawing.Point(135, 341);
-            processOrderBtn.Name = "processOrderBtn";
-            processOrderBtn.Size = new System.Drawing.Size(103, 23);
-            processOrderBtn.TabIndex = 17;
-            processOrderBtn.Text = "Make order";
-            processOrderBtn.UseVisualStyleBackColor = true;
+            goodsClb.AutoSize = true;
             // 
             // warehousesLbl
             // 
             warehousesLbl.AutoSize = true;
-            warehousesLbl.Location = new System.Drawing.Point(13, 172);
+            warehousesLbl.Location = new System.Drawing.Point(9, 160);
             warehousesLbl.Margin = new Padding(4, 0, 4, 0);
             warehousesLbl.Name = "warehousesLbl";
             warehousesLbl.Size = new System.Drawing.Size(139, 13);
@@ -123,46 +126,50 @@ namespace View.Views
             // warehousesClb
             // 
             warehousesClb.FormattingEnabled = true;
-            warehousesClb.Location = new System.Drawing.Point(16, 188);
+            warehousesClb.Location = new System.Drawing.Point(17, 188);
             warehousesClb.Name = "warehousesClb";
-            warehousesClb.Size = new System.Drawing.Size(120, 79);
+            warehousesClb.Size = new System.Drawing.Size(300, 79);
             warehousesClb.TabIndex = 15;
+            warehousesClb.SelectionMode = SelectionMode.One;
+            warehousesClb.AutoSize = true;
             // 
             // refreshBtn
             // 
-            refreshBtn.Location = new System.Drawing.Point(52, 450);
+            refreshBtn.Location = new System.Drawing.Point(135, 341);;
             refreshBtn.Name = "refreshBtn";
             refreshBtn.Size = new System.Drawing.Size(75, 23);
             refreshBtn.TabIndex = 18;
             refreshBtn.Text = "Refresh";
             refreshBtn.UseVisualStyleBackColor = true;
+            refreshBtn.Click += RefreshBtnClick;
             // 
             // addGoodsBtn
             // 
-            addGoodsBtn.Location = new System.Drawing.Point(179, 44);
+            addGoodsBtn.Location = new System.Drawing.Point(450, 44);
             addGoodsBtn.Margin = new Padding(4);
             addGoodsBtn.Name = "addGoodsBtn";
-            addGoodsBtn.Size = new System.Drawing.Size(171, 34);
+            addGoodsBtn.Size = new System.Drawing.Size(170, 34);
             addGoodsBtn.TabIndex = 13;
             addGoodsBtn.Text = "Add selected to order";
             addGoodsBtn.UseVisualStyleBackColor = true;
+            addGoodsBtn.Click += AddGoodsBtnClick;
             // 
             // warehouseSelectionBtn
             // 
-            warehouseSelectionBtn.Location = new System.Drawing.Point(179, 188);
+            warehouseSelectionBtn.Location = new System.Drawing.Point(350, 188);
             warehouseSelectionBtn.Margin = new Padding(4);
             warehouseSelectionBtn.Name = "warehouseSelectionBtn";
-            warehouseSelectionBtn.Size = new System.Drawing.Size(171, 34);
+            warehouseSelectionBtn.Size = new System.Drawing.Size(170, 34);
             warehouseSelectionBtn.TabIndex = 19;
             warehouseSelectionBtn.Text = "Set order warehouse";
             warehouseSelectionBtn.UseVisualStyleBackColor = true;
+            warehouseSelectionBtn.Click += AddWarehouseBtnClick;
             // 
             // orderOptionsMenuView
             // 
             Controls.Add(warehouseSelectionBtn);
             Controls.Add(goodsLbl);
             Controls.Add(goodsClb);
-            Controls.Add(processOrderBtn);
             Controls.Add(warehousesLbl);
             Controls.Add(warehousesClb);
             Controls.Add(refreshBtn);
@@ -172,5 +179,13 @@ namespace View.Views
             ResumeLayout(false);
             PerformLayout();
         }
+        private Label goodsLbl;
+        private CheckedListBox goodsClb;
+        private Button processOrderBtn;
+        private Label warehousesLbl;
+        private CheckedListBox warehousesClb;
+        private Button refreshBtn;
+        private Button addGoodsBtn;
+        private Button warehouseSelectionBtn;
     }
 }

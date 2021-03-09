@@ -1,5 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using Domain.GoodsDomain;
+using Domain.OrderDomain;
+using Domain.WarehouseDomain;
 using Services.Abstractions;
 using Services.Services;
 using View.Abstractions;
@@ -27,22 +31,48 @@ namespace View.Presenters
             OrderService = orderService;
             GoodsService = goodsService;
             WarehouseService = warehouseService;
+
+            SubscribeOnViewEvents();
+            View.PresenterCreated();
         }
 
         public void GetOrderProcessTimeBtnClicked(object sender, EventArgs args)
         {
         }
 
-        public void LoadData(object sender, EventArgs args)
+        private void OrderSubmitClicked(object sender, EventArgs args)
         {
-            View.ShowAllGoods(View.GetSelectedGoods());
-            View.ShowWarehouse(View.GetSelectedWarehouse());
+            if (View.PendingOrder != null)
+            {
+                OrderService.Add(View.PendingOrder);
+            }
+        }
+
+        private void LoadData(object sender, EventArgs args)
+        {
+            List<GoodsModel> selectedGoods = View.GetSelectedGoods();
+            WarehouseModel selectedWarehouse = View.GetSelectedWarehouse();
+
+            View.ShowAllGoods(selectedGoods);
+
+            if (selectedWarehouse == null)
+                return;
+            View.ShowWarehouse(selectedWarehouse);
+            
+            OrderModel order = OrderService.MakeOrder(selectedGoods, selectedWarehouse);
+            OrderService.ProcessOrder(order);
+            View.PendingOrder = order;
+
+            View.ShowOrder(order);
+
+
             View.UpdateChanges();
         }
 
         public void SubscribeOnViewEvents()
         {
-            throw new NotImplementedException();
+            View.DataRequested += LoadData;
+            View.OrderCommitRequested += OrderSubmitClicked;
         }
     }
 }

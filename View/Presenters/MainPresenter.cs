@@ -36,12 +36,13 @@ namespace View.Presenters
             _orderService = new OrderService(unit);
 
             _view = (MainMenuView) view;
+            SubscribeOnViewEvents();
         }
 
         private void OrderOptionsClicked(object sender, EventArgs args)
         {
             OptionsMenuPresenter = new OrderOptionsPresenter(
-                (OrderOptionsMenuView) sender,
+                (OrderOptionsView) sender,
                 _goodsService,
                 _warehouseService,
                 _staffService);

@@ -11,5 +11,12 @@ namespace Domain.GoodsDomain
 
         public abstract GoodsType Type { get; }
         public abstract TimeSpan ProcessTime { get; }
+
+        public override string ToString()
+        {
+            return Id + ") Name: " + Name + " | " +
+                   " Price: " + Price + " | " +
+                   " Type: " + Type;
+        }
     }
 }

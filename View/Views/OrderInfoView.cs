@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Domain.GoodsDomain;
+using Domain.OrderDomain;
 using Domain.WarehouseDomain;
 using View.Abstractions;
 using View.Abstractions.ViewAbstractions;
@@ -11,7 +12,10 @@ namespace View.Views
 {
     public partial class OrderInfoView : UserControl, IOrderInfoUserControl
     {
+        public event EventHandler DataRequested = delegate {  };
+        public event EventHandler OrderCommitRequested = delegate {  };
         private IMainView ParentView { get; set; }
+        public OrderModel PendingOrder { get; set; }
 
         public OrderInfoView(IMainView parentView)
         {
@@ -26,6 +30,11 @@ namespace View.Views
             Refresh();
         }
 
+        private void OrderCommitRaised(object sender, EventArgs args)
+        {
+            OrderCommitRequested.Invoke(sender,args);
+        }
+        
         public WarehouseModel GetSelectedWarehouse()
         {
             return ParentView.SelectedWarehouse;
@@ -36,21 +45,36 @@ namespace View.Views
             return ParentView.SelectedGoods;
         }
 
+        public void ShowOrder(OrderModel order)
+        {
+            totalCostLbl.Text += order.TotalCost;
+            estimateProcessTimeLbl.Text += $"{order.EstimateProcessTime.Days} d. " +
+                                           $"{order.EstimateProcessTime.Hours} h. " +
+                                           $"{order.EstimateProcessTime.Minutes} m." ;
+            estimateProcessTimeLbl.Size = estimateProcessTimeLbl.PreferredSize;
+        }
+        
+        public void PresenterCreated()
+        {
+            DataRequested.Invoke(this,new EventArgs());
+        }
+        
         public void ShowAllGoods(List<GoodsModel> goods)
         {
-            var formattedGoods = goods
-                .Select(item =>
-                    "Name: " + item.Name +
-                    "Price: " + item.Price +
-                    "Type: " + item.Type)
-                .ToArray();
-            selectedGoodsLbx.Items.AddRange(formattedGoods);
+            selectedGoodsLbx.DataSource = goods;
+            selectedGoodsLbx.Size = selectedGoodsLbx.PreferredSize;
         }
-
+        
         public void ShowWarehouse(WarehouseModel warehouse)
         {
-            selectedWarehouseTbx.Lines[0] += $"Name: {warehouse.Name}";
-            selectedWarehouseTbx.Lines[1] += $"Distance: {warehouse.Distance}";
+            selectedWarehouseLbl.Text = $"Name: {warehouse.Name} \n" +
+                                         $"Distance: {warehouse.Distance}";
+            selectedWarehouseLbl.Size = selectedWarehouseLbl.PreferredSize;
+        }
+
+        private void orderSubmit_Click(object sender, EventArgs e)
+        {
+            OrderCommitRaised(sender, e);
         }
     }
 }

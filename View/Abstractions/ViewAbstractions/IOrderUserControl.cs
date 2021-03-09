@@ -7,5 +7,7 @@ namespace View.Abstractions.ViewAbstractions
     {
         void UpdateChanges();
         void ShowAllGoods(List<GoodsModel> goods);
+        void PresenterCreated();
+
     }
 }

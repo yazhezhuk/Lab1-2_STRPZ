@@ -3,7 +3,7 @@ using Domain.WarehouseDomain;
 
 namespace View.Abstractions.ViewAbstractions
 {
-    public interface IOrderOptionsMenuView : IOrderUserControl
+    public interface IOrderOptionsView : IOrderUserControl
     {
         void ShowAllWarehouses(List<WarehouseModel> warehouses);
     }

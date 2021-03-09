@@ -11,9 +11,9 @@ namespace View.Presenters
         private readonly WarehouseService _warehouseService;
         private readonly StaffService _staffService;
         
-        private readonly OrderOptionsMenuView _view;
+        private readonly OrderOptionsView _view;
 
-        public OrderOptionsPresenter(OrderOptionsMenuView view,
+        public OrderOptionsPresenter(OrderOptionsView view,
             GoodsService goodsService,
             WarehouseService warehouseService,
             StaffService staffService)        
@@ -24,11 +24,17 @@ namespace View.Presenters
 
             _view = view;
             SubscribeOnViewEvents();
+            
+            NotifyPresenterLoaded();
         }
 
+        private void NotifyPresenterLoaded()
+        {
+            _view.PresenterCreated();
+        }
         public void SubscribeOnViewEvents()
         {
-            _view.Validated += DataLoadHandler;
+            _view.DataRequested += DataLoadHandler;
         }
 
         private void DataLoadHandler(object sender, EventArgs args)
@@ -37,5 +43,7 @@ namespace View.Presenters
             _view.ShowAllWarehouses(_warehouseService.GetAll());
             _view.UpdateChanges();
         }
+
+        
     }
 }

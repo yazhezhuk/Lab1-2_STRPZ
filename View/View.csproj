@@ -65,7 +65,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Abstractions\ViewAbstractions\IMainView.cs" />
-    <Compile Include="Abstractions\ViewAbstractions\IOrderOptionsUC.cs" />
+    <Compile Include="Abstractions\ViewAbstractions\IOrderOptionsUserControl.cs" />
     <Compile Include="Presenters\MainPresenter.cs" />
     <Compile Include="Views\MainMenuView.cs">
       <SubType>Form</SubType>

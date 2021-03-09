@@ -21,8 +21,9 @@ namespace View
         public event EventHandler OrderOptionsMenuSelected = delegate { };
         public event EventHandler OrderInfoMenuSelected = delegate { };
         
+        
         public List<GoodsModel> Goods { get; set; }
-        public List<GoodsModel> SelectedGoods { get; set; }
+        public List<GoodsModel> SelectedGoods { get; set; } = new List<GoodsModel>();
 
         public List<WarehouseModel> Warehouses { get; set; }
         public WarehouseModel SelectedWarehouse { get; set; }
@@ -35,7 +36,7 @@ namespace View
 
         private void OrderComponentsBtnClick(object sender, EventArgs args)
         {
-            var optionsMenuView = new OrderOptionsMenuView(this);
+            var optionsMenuView = new OrderOptionsView(this);
             ChangeMainUserControl(optionsMenuView);
 
             OrderOptionsMenuSelected.Invoke(optionsMenuView, new EventArgs());
@@ -63,5 +64,14 @@ namespace View
             }
         }
 
+        private void orderOptionsBtn_Click(object sender, EventArgs e)
+        {
+            OrderComponentsBtnClick(sender,e);
+        }
+
+        private void orderInfoBtn_Click(object sender, EventArgs e)
+        {
+            OrderInfoMenuBtnClick(sender,e);
+        }
     }
 }

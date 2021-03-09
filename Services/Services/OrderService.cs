@@ -53,7 +53,6 @@ namespace Services.Services
         
         public void Add(OrderModel order)
         {
-            ProcessOrder(order);
             var orderGoods = order.Goods;
             var orderEntity = order.ToEntity();
             orderGoods.ForEach(goods => UnitOfWork.OrderInfos.Add(
