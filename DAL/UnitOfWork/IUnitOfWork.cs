@@ -3,7 +3,7 @@ using Entities;
 
 namespace DAL
 {
-    public interface IUnitOfWork
+public interface IUnitOfWork
     {
         IRepository<GoodsEntity> Goods { get; set; }
         IRepository<EmployeeEntity> Employees { get; set; }

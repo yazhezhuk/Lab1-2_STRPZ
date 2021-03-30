@@ -28,15 +28,8 @@ namespace DAL.Repositories
             DataStorage.ToList().Remove(toDelete);
         }
 
-        public List<TEntity> GetAll(Predicate<TEntity>? filter)
-        {
-            return filter != null
-                ? DataStorage
-                    .TakeWhile(entity => filter.Invoke(entity))
-                    .ToList()
-                : DataStorage
-                    .ToList();
-        }
+        public List<TEntity> GetAll() => DataStorage.ToList();
+        
 
         public TEntity GetById(int id)
         {

@@ -6,7 +6,7 @@ namespace DAL.Repositories.Abstractions
     public interface IRepository<T>
     {
         void AddOrUpdate(T obj);
-        List<T> GetAll(Predicate<T>? filter = null);
+        List<T> GetAll();
 
         T GetById(int id);
         

@@ -7,6 +7,7 @@ namespace DAL
     {
         public ShopContext():base("ShopDB")
         {
+            Database.SetInitializer(new DataInitializer());
             
         }
         

@@ -28,16 +28,18 @@ namespace Services.Services
         public EmployeeModel GetLeastBusyEmployee(Speciality spec)
         {
             var leastBusy = GetAll(employee => employee.Speciality == spec)
-                .Aggregate((min, x) =>
-                    min.Orders.Count(order => order.Completed == false) > x.Orders.Count ? x : min);
+                .Aggregate((min, x) => min
+                    .Orders
+                    .Count(order => order.Completed == false) > x.Orders.Count ? x : min);
 
             return leastBusy;
         }
 
         public List<EmployeeModel> GetAll(Predicate<EmployeeEntity> criteria)
-        { 
+        {
             var employees = UnitOfWork.Employees
-                .GetAll(criteria)
+                .GetAll()
+                .Where(criteria.Invoke)
                 .Select(EmployeeMapper.ToModel)
                 .ToList();
 
