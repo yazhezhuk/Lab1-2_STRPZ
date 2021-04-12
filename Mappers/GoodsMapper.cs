@@ -6,7 +6,7 @@ namespace Mappers
 {
     public class GoodsMapper
     {
-        public GoodsEntity ToEntity( GoodsModel goods)
+        public GoodsEntity ToEntity(GoodsModel goods)
         {
             return new GoodsEntity
             {

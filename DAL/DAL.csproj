@@ -118,13 +118,15 @@
         <Compile Include="DataInitializer.cs" />
         <Compile Include="InMemoryDataStub.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Repositories\Abstractions\IRepository.cs" />
-        <Compile Include="Repositories\EfRepositories\GenericRepository.cs" />
         <Compile Include="ShopContext.cs" />
         <Compile Include="UnitOfWork\IUnitOfWork.cs" />
         <Compile Include="UnitOfWork\UnitOfWork.cs" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\EfRepository\EfRepository.csproj">
+        <Project>{622fb8f8-f5e8-4610-bda2-c8c0b1cdd38e}</Project>
+        <Name>EfRepository</Name>
+      </ProjectReference>
       <ProjectReference Include="..\Entities\Entities.csproj">
         <Project>{ff0a5798-d1f3-45e9-a37b-6be25e8dfb8e}</Project>
         <Name>Entities</Name>

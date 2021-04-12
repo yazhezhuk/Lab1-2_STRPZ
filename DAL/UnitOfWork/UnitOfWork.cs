@@ -1,6 +1,6 @@
 using System.Data.Entity;
-using DAL.Repositories;
-using DAL.Repositories.Abstractions;
+using EfRepository.Abstractions;
+using EfRepository.Repositories;
 using Entities;
 
 namespace DAL

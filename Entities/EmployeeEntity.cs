@@ -4,7 +4,7 @@ using Types;
 
 namespace Entities
 {
-    public class EmployeeEntity : ISaveableEntity
+    public class EmployeeEntity : IEntity
     {
         public int Id { get; set; }
 

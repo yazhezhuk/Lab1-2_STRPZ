@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DAL.Repositories.Abstractions
+namespace EfRepository.Abstractions
 {
     public interface IRepository<T>
     {

@@ -21,7 +21,7 @@ namespace View
         public event EventHandler OrderOptionsMenuSelected = delegate { };
         public event EventHandler OrderInfoMenuSelected = delegate { };
 
-        public List<GoodsModel> SelectedGoods { get; set; } = new List<GoodsModel>();
+        public List<GoodsModel> SelectedGoods { get; set; } = new();
         public WarehouseModel SelectedWarehouse { get; set; }
 
         

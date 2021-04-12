@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class WarehouseEntity : ISaveableEntity
+    public class WarehouseEntity : IEntity
     {
         public int Id { get; set; }
 

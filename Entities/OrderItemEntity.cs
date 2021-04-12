@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class OrderItemEntity : ISaveableEntity
+    public class OrderItemEntity : IEntity
     {
         public int Id { get; set; }
 

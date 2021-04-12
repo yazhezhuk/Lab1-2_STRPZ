@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    public class GoodsEntity : ISaveableEntity
+    public class GoodsEntity : IEntity
     {
         public int Id { get; set; }
 

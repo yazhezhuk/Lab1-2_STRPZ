@@ -1,4 +1,4 @@
-using DAL.Repositories.Abstractions;
+using EfRepository.Abstractions;
 using Entities;
 
 namespace DAL

@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
-using System.Data.Linq;
 using System.Linq;
-using DAL.Repositories.Abstractions;
+using EfRepository.Abstractions;
 using Entities;
 
-namespace DAL.Repositories
+namespace EfRepository.Repositories
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> 
-        where TEntity : class, ISaveableEntity
+        where TEntity : class,IEntity 
     
     {
         private readonly DbSet<TEntity> DataStorage;
@@ -29,17 +27,12 @@ namespace DAL.Repositories
         }
 
         public List<TEntity> GetAll() => DataStorage.ToList();
-        
 
-        public TEntity GetById(int id)
-        {
-            return DataStorage
-                .FirstOrDefault(entity => entity.Id == id)!;
-        }
 
-        public void AddOrUpdate(TEntity obj)
-        {
+        public TEntity GetById(int id) => 
+            DataStorage.FirstOrDefault(entity => entity.Id == id);
+
+        public void AddOrUpdate(TEntity obj) =>
             DataStorage.AddOrUpdate(obj);
-        }
     }
 }

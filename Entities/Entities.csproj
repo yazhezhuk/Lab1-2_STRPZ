@@ -42,7 +42,7 @@
     <ItemGroup>
         <Compile Include="EmployeeEntity.cs" />
         <Compile Include="GoodsEntity.cs" />
-        <Compile Include="ISaveableEntity.cs" />
+        <Compile Include="IEntity.cs" />
         <Compile Include="OrderEntity.cs" />
         <Compile Include="OrderItemEntity.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

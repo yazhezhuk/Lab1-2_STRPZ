@@ -31,7 +31,7 @@ namespace Domain.EmployeesDomain
 
             var deliveryTime = CalculateDeliveryTime(order);
             order.EstimateProcessTime += this.LoadedHours;
-            order.EstimateProcessTime += deliveryTime;
+            order.EstimateProcessTime += deliveryTime; 
         }
 
     }

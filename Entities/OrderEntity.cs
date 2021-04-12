@@ -3,7 +3,7 @@ using System.Collections.ObjectModel;
 
 namespace Entities
 {
-    public class OrderEntity : ISaveableEntity
+    public class OrderEntity : IEntity
     {
         public int Id { get; set; }
 

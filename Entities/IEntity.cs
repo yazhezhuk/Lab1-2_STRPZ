@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public interface ISaveableEntity
+    public interface IEntity
     {
         int Id { get; set; }
     }
