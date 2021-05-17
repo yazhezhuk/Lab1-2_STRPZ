@@ -6,8 +6,9 @@ namespace Entities
     {
         public int Id { get; set; }
 
-        public int Price { get; set; }
+        public double Price { get; set; }
         public string Name { get; set; }
-        public GoodsType Type { get; set; }
+        public int GoodsTypeId { get; set; }
+        public virtual GoodsTypeEntity GoodsType { get; set; }
     }
 }

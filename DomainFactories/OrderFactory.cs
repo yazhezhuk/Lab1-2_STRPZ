@@ -9,14 +9,13 @@ namespace DomainFactories
     public class OrderFactory
     {
         public OrderModel CreateOrder(WarehouseModel warehouse,
-            List<GoodsModel> goods)
+            List<OrderItemModel> goods)
         {
             var order = new OrderModel
             {
-                Goods = goods,
-                RelativeDistance = warehouse.Distance,
-                WarehouseId = warehouse.Id,
-                TimeOfCreation = DateTime.Now,
+                OrderItems = goods,
+                Warehouse = warehouse,
+                TimeOfCreation = DateTime.Now
             };
             return order;
         }

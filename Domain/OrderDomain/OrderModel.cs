@@ -10,20 +10,23 @@ namespace Domain.OrderDomain
     {
         public int Id { get; set; }
         
-        public int WarehouseId { get; set; }
+        public WarehouseModel Warehouse { get; set; }
         
 
-        public int ManagerId { get; set; }
+        public int ManagerId { get; set; }         
         public int DriverId { get; set; }
 
-        public int RelativeDistance { get; set; }
+        public int RelativeDistance => Warehouse.Distance;				
         public DateTime TimeOfCreation { get; set; }
         public TimeSpan EstimateProcessTime { get; set; }
+        
+        public DateTime EstimateDeliveryTime => TimeOfCreation + EstimateProcessTime;
 
-        public int TotalCost { get; set; }
+        public double TotalCost { get; set; }
 
         public bool Completed { get; set; } = false;
 
-        public List<GoodsModel> Goods { get; set; }
+        public List<OrderItemModel> OrderItems{ get; set; }
+        
     }
 }

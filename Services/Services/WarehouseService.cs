@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DAL;
+using DAL.UnitOfWork;
 using Domain.WarehouseDomain;
 using Mappers;
 using Services.Abstractions;
@@ -39,7 +40,12 @@ namespace Services.Services
 
         public void Delete(WarehouseModel item)
         {
-            Context.Warehouses.Delete(WarehouseMapper.ToEntity(item).Id);
+            Context.Warehouses.Delete(WarehouseMapper.ToEntity(item));
+        }
+
+        public void Update(WarehouseModel item)
+        {
+	        throw new NotImplementedException();
         }
     }
 }

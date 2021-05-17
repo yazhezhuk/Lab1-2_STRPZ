@@ -19,14 +19,11 @@ namespace Domain.EmployeesDomain
 
         public TimeSpan LoadedHours
         {
-            get
-            {
-                return Orders.Count != 0 
-                    ? Orders.Select(order => order.EstimateProcessTime)
-                            .Aggregate((t1, t2) => t1 + t2) 
-                    : new TimeSpan(0, 0, 0);
-            }
+	        get;
+	        set;
         }
+
+        public int SpecialityId { get; set; }
 
         public abstract Speciality Speciality { get; }
 

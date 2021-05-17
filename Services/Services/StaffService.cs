@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DAL;
+using DAL.UnitOfWork;
 using Domain.EmployeesDomain;
 using Domain.OrderDomain;
 using Entities;
@@ -27,10 +28,8 @@ namespace Services.Services
 
         public EmployeeModel GetLeastBusyEmployee(Speciality spec)
         {
-            var leastBusy = GetAll(employee => employee.Speciality == spec)
-                .Aggregate((min, x) => min
-                    .Orders
-                    .Count(order => order.Completed == false) > x.Orders.Count ? x : min);
+            EmployeeModel leastBusy = GetAll(employee => employee.EmployeeSpeciality.Speciality == spec)
+                .Aggregate((min, x) => min.LoadedHours > x.LoadedHours ? x : min);
 
             return leastBusy;
         }
@@ -54,7 +53,7 @@ namespace Services.Services
 
         public EmployeeModel Get(int id)
         {
-            var employeeModel = EmployeeMapper.ToModel(UnitOfWork.Employees
+            EmployeeModel employeeModel = EmployeeMapper.ToModel(UnitOfWork.Employees
                 .GetById(id));
 
             return employeeModel;
@@ -62,12 +61,12 @@ namespace Services.Services
 
         public void Delete(EmployeeModel item)
         {
-            UnitOfWork.Employees.Delete(EmployeeMapper.ToEntity(item).Id);
+            UnitOfWork.Employees.Delete(EmployeeMapper.ToEntity(item));
         }
 
         public void Update(EmployeeModel employee)
         {
-            UnitOfWork.Employees.AddOrUpdate(EmployeeMapper.ToEntity(employee));
+            UnitOfWork.Employees.Update(EmployeeMapper.ToEntity(employee));
         }
 
         public List<EmployeeModel> GetAll()

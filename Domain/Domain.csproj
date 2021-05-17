@@ -47,11 +47,17 @@
         <Compile Include="GoodsDomain\FoodModel.cs" />
         <Compile Include="GoodsDomain\FurnitureModel.cs" />
         <Compile Include="GoodsDomain\GoodsModel.cs" />
+        <Compile Include="OrderDomain\OrderItemModel.cs" />
         <Compile Include="OrderDomain\OrderModel.cs" />
+        <Compile Include="Properties\Annotations.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="WarehouseDomain\WarehouseModel.cs" />
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\DAL\DAL.csproj">
+        <Project>{9b94f103-f9e9-482c-ab12-2f30406f8b31}</Project>
+        <Name>DAL</Name>
+      </ProjectReference>
       <ProjectReference Include="..\Entities\Entities.csproj">
         <Project>{ff0a5798-d1f3-45e9-a37b-6be25e8dfb8e}</Project>
         <Name>Entities</Name>

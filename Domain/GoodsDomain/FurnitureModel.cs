@@ -5,14 +5,10 @@ namespace Domain.GoodsDomain
 {
     public class FurnitureModel : GoodsModel
     {
-        public override GoodsType Type
-        {
-            get => GoodsType.Furniture;
-        }
+        public override GoodsType Type =>
+	        GoodsType.Furniture;
 
-        public override TimeSpan ProcessTime
-        {
-            get => new TimeSpan(0, 30, 0);
-        }
+        public override TimeSpan ProcessTime =>
+	        new TimeSpan(0, 30, 0);
     }
 }

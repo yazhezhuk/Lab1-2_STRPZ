@@ -11,5 +11,7 @@ namespace Services.Abstractions
         List<TModel> GetAll();
 
         void Delete(TModel item);
+
+        void Update(TModel item);
     }
 }

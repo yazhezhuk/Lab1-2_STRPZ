@@ -7,23 +7,23 @@ namespace Domain.EmployeesDomain
 {
     public class ManagerModel : EmployeeModel
     {
-        public override Speciality Speciality
-        {
-            get => Speciality.Manager;
-        }
+        public override Speciality Speciality => Speciality.Manager;
 
         public TimeSpan CalculateOrderProcessTime(OrderModel order)
         {
-            return order.Goods
-                        .Select(goods => goods.ProcessTime)
-                        .Aggregate((g1, g2) => g1 + g2);
+            return order.OrderItems
+                        .Select(goods => goods.Goods.ProcessTime)
+                        .Aggregate((goodsProcessTime1,goodsProcessTime2 ) =>
+	                        goodsProcessTime1 + goodsProcessTime2);
         }
 
-        public int CalculateOrderCost(OrderModel order)
+        public double CalculateOrderCost(OrderModel order)
         {
-            return order.Goods
-                .Select(goods => goods.Price)
-                .Aggregate((g1, g2) => g1 + g2);
+            return order.OrderItems
+                .Select(goods =>
+	                goods.Goods.Price * goods.Quantity)
+                .Aggregate((goodsPrice1, goodsPrice2) => 
+	                goodsPrice1 + goodsPrice2);
         }
 
         public override void ProcessOrder(OrderModel order)
@@ -31,8 +31,10 @@ namespace Domain.EmployeesDomain
             order.ManagerId = Id;
 
             order.TotalCost = CalculateOrderCost(order);
-            order.EstimateProcessTime += this.LoadedHours;
+            order.EstimateProcessTime += LoadedHours;
             order.EstimateProcessTime += CalculateOrderProcessTime(order);
+
+            LoadedHours += order.EstimateProcessTime;
         }
 
     }

@@ -32,13 +32,8 @@ namespace View.Presenters
             View.PresenterCreated();
         }
 
-        private void OrderSubmitClicked(object sender, EventArgs args)
-        {
-            if (View.PendingOrder != null)
-            {
-                OrderService.Add(View.PendingOrder);
-            }
-        }
+        private void OrderSubmitClicked(object sender, EventArgs args) =>
+            OrderService.Add(View.PendingOrder);
 
         private void LoadData(object sender, EventArgs args)
         {

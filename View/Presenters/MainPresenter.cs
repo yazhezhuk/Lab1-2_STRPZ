@@ -39,22 +39,18 @@ namespace View.Presenters
             _view.OrderInfoMenuSelected += OrderInfoClicked;
         }
 
-        private void OrderOptionsClicked(object sender, EventArgs args)
-        {
+        private void OrderOptionsClicked(object sender, EventArgs args) =>
             OptionsMenuPresenter = new OrderOptionsPresenter(
                 (OrderOptionsView) sender,
                 _goodsService,
                 _warehouseService,
                 _staffService);
-        }
 
-        private void OrderInfoClicked(object sender, EventArgs args)
-        {
+        private void OrderInfoClicked(object sender, EventArgs args) =>
             InfoMenuPresenter = new OrderInfoPresenter(
                 (OrderInfoView) sender,
                 _orderService,
                 _goodsService,
                 _warehouseService);
-        }
     }
 }

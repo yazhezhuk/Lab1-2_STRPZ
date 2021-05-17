@@ -7,7 +7,11 @@ namespace Services.Abstractions
 {
     public interface IOrderService : IService<OrderModel>
     {
-        OrderModel MakeOrder(List<GoodsModel> selectedGoods,WarehouseModel selectedWarehouse);
+        OrderModel MakeOrder();
         void ProcessOrder(OrderModel order);
+
+        OrderModel? GetPendingOrder();
+
+        void Clear();
     }
 }

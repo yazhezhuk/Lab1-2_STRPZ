@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using DAL;
 using Domain.OrderDomain;
@@ -7,6 +8,8 @@ using Entities;
 using Mappers;
 using Types;
 using System.Linq;
+using DAL.UnitOfWork;
+using Domain.EmployeesDomain;
 using Domain.GoodsDomain;
 using Services.Abstractions;
 using Services.ChainHandlers;
@@ -19,72 +22,98 @@ namespace Services.Services
         private OrderMapper OrderMapper { get; }
         private GoodsMapper GoodsMapper { get; }
 
-        public OrderService(IUnitOfWork context)
+        //TODO *use service DI`s*
+        public OrderService( IUnitOfWork context )//IServiceProvider serviceProvider ) 
         {
             UnitOfWork = context;
-            OrderMapper = new OrderMapper();
             GoodsMapper = new GoodsMapper();
+            OrderMapper = new OrderMapper();
         }
 
         public void ProcessOrder(OrderModel order)
         {
-            var staffService = new StaffService(UnitOfWork);
+	        StaffService staffService = new StaffService(UnitOfWork);
+	        OrderService orderService = new OrderService(UnitOfWork);
 
-            var leastBusyManager = staffService.GetLeastBusyEmployee(Speciality.Manager);
-            var leastBusyDriver = staffService.GetLeastBusyEmployee(Speciality.Driver);
+	        
+            ChainHandler chainHandler;
 
-            ChainHandler handlingPipeline = new EmployeeHandler(leastBusyManager);
-            handlingPipeline.SetNextHandler(new EmployeeHandler(leastBusyDriver));
-            handlingPipeline.ProcessOrder(order);
+            EmployeeModel leastBusyManager = staffService.GetLeastBusyEmployee(Speciality.Manager);
+            chainHandler = new EmployeeHandler(leastBusyManager);
+            
+            EmployeeModel leastBusyDriver = staffService.GetLeastBusyEmployee(Speciality.Driver);
+            chainHandler.SetNextHandler(new EmployeeHandler(leastBusyDriver));
+            
+            chainHandler.ProcessOrder(order);
 
+            Add(order);
+            
             staffService.Update(leastBusyDriver);
             staffService.Update(leastBusyManager);
         }
 
-        public OrderModel MakeOrder(List<GoodsModel> selectedGoods,
-                                    WarehouseModel selectedWarehouse)
+        public OrderModel MakeOrder()
         {
-            var order = new OrderModel
+            OrderModel order = new OrderModel
             {
-                Goods = selectedGoods,
-                WarehouseId = selectedWarehouse.Id,
-                RelativeDistance = selectedWarehouse.Distance,
-                TimeOfCreation = DateTime.Now,
-                Completed = false
+	            OrderItems = new List<OrderItemModel>(),
+	            TimeOfCreation = DateTime.Now,
+	            Completed = false
             };
             return order;
+        }
+
+        public OrderModel? GetPendingOrder()
+        {
+	        var selectedOrder = UnitOfWork.Orders
+			        .GetAll()
+			        .FindAll(order => !order.Completed)
+			        .LastOrDefault() ?? null;
+	        return selectedOrder != null 
+		        ? OrderMapper.ToModel(selectedOrder) 
+		        : null;
         }
         
         public void Add(OrderModel order)
         {
-            var orderGoods = order.Goods;
-            var orderEntity = OrderMapper.ToEntity(order);
-            orderGoods.ForEach(goods => UnitOfWork.OrderInfos.AddOrUpdate(
-                    new OrderItemEntity
-                    {
-                        GoodsId = goods.Id,
-                        OrderId = orderEntity.Id
-                    }));
-
-            UnitOfWork.Orders.AddOrUpdate(orderEntity);
+	        UnitOfWork.Orders.Add(OrderMapper.ToEntity(order));
+	        
+	        order.OrderItems.ForEach(goods => 
+	             UnitOfWork.OrderInfos.Add(new OrderItemEntity 
+	             {
+		             GoodsId = goods.Goods.Id,
+		             Quantity = goods.Quantity,
+		             OrderId = UnitOfWork.Orders.GetAll().Last().Id
+	             }));
+             UnitOfWork.CommitChanges();
         }
 
-        public OrderModel Get(int id)
+        public void Update(OrderModel order)
         {
-            IService<WarehouseModel> warehouseService = new WarehouseService(UnitOfWork);
-
-            var orderDbEntity = UnitOfWork.Orders.GetById(id);
+	        UnitOfWork.Orders.Update(OrderMapper.ToEntity(order));
+	        order.OrderItems.ForEach(item => 
+		        UnitOfWork.OrderInfos.Update(new OrderItemEntity
+		        {
+			          Id = item.Id,
+				GoodsId = item.Goods.Id,
+				OrderId = order.Id,
+				Quantity = item.Quantity
+		        }));
+	        UnitOfWork.CommitChanges();
+        }
+        
+        public OrderModel Get(int id)
+        { 
+	        var orderDbEntity = UnitOfWork.Orders.GetById(id);
             var orderModel = OrderMapper.ToModel(orderDbEntity);
-            orderModel.Goods = orderDbEntity.Goods
-                .Select(goods => GoodsMapper.ToModel(goods))
-                .ToList();
 
             return orderModel;
         }
 
         public void Delete(OrderModel item)
         {
-            UnitOfWork.Orders.Delete(OrderMapper.ToEntity(item).Id);
+            UnitOfWork.Orders.Delete(OrderMapper.ToEntity(item));
+            UnitOfWork.CommitChanges();
         }
 
         public List<OrderModel> GetAll()
@@ -93,6 +122,10 @@ namespace Services.Services
                 .GetAll()
                 .Select(OrderMapper.ToModel)
                 .ToList();
+        }
+
+        public void Clear()
+        {
         }
     }
 }

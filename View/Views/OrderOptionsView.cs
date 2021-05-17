@@ -28,26 +28,15 @@ namespace View.Views
             Refresh();
         }
 
-        public void ShowAllWarehouses(List<WarehouseModel> warehouse)
+        public void ShowAllWarehouses(List<WarehouseModel> warehouses)
         {
-            var formattedWarehouses = warehouse
-                .Select(item =>
-                    "Name: " + item.Name +
-                    " Distance: " + item.Distance)
-                .ToArray();
-            warehousesClb.DataSource = warehouse;
+            warehousesClb.DataSource = warehouses;
             warehousesClb.Size = warehousesClb.PreferredSize;
 
         }
 
         public void ShowAllGoods(List<GoodsModel> goods)
         {
-            var formattedGoods = goods
-                .Select(item =>
-                    "Name: " + item.Name +
-                    " Price: " + item.Price +
-                    " Type: " + item.Type)
-                .ToArray();
             goodsClb.DataSource = goods;
             goodsClb.Size = goodsClb.PreferredSize;
         }

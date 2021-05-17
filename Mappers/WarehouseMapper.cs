@@ -9,6 +9,7 @@ namespace Mappers
         {
             return new WarehouseEntity
             {
+                Id = warehouse.Id,
                 RelativeDistance = warehouse.Distance,
                 CompanyName = warehouse.Name
             };
@@ -18,6 +19,7 @@ namespace Mappers
         {
             return new WarehouseModel
             {
+                Id = warehouse.Id,
                 Distance = warehouse.RelativeDistance,
                 Name = warehouse.CompanyName
             };
