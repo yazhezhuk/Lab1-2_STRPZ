@@ -1,10 +1,12 @@
 ﻿using Domain.EmployeesDomain;
 using Domain.OrderDomain;
+using Services.ResponsibilityChainHandlers;
+
 namespace Services.ChainHandlers
 {
-    public class EmployeeHandler : ChainHandler
+    public class EmployeeNodeHandler : ChainNodeHandler
     {
-        public EmployeeHandler(EmployeeModel employee)
+        public EmployeeNodeHandler(EmployeeModel employee)
         {
             ProcessingInstance = employee;
         }
@@ -12,8 +14,8 @@ namespace Services.ChainHandlers
         public override OrderModel ProcessOrder(OrderModel order)
         {
             ProcessingInstance.ProcessOrder(order);
-            return NextHandler != null
-                ? NextHandler.ProcessOrder(order)
+            return NextNodeHandler != null
+                ? NextNodeHandler.ProcessOrder(order)
                 : order;
         }
     }

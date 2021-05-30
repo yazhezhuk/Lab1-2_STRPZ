@@ -1,9 +1,10 @@
+using System.Collections.Generic;
 using Domain.WarehouseDomain;
 
 namespace Services.Abstractions
 {
-    public interface IWarehouseService : IService<WarehouseModel>
-    {
-        
+    public interface IWarehouseService
+    { 
+	    List<WarehouseModel> GetAll();
     }
 }

@@ -2,15 +2,14 @@
 
 namespace EfRepository.Abstractions
 {
-    public interface IRepository<T>
+    public interface IRepository<TEntity,TKey>
     {
-        void AddOrUpdate(T obj);
-        void Add(T obj);
-        List<T> GetAll();
+        void Add(TEntity obj);
+        List<TEntity> GetAll();
 
-        T GetById(int id);
+        TEntity GetById(TKey id);
         
-        void Delete(T id);
-        void Update(T obj);
+        void Delete(TEntity obj);
+        void Update(TEntity obj);
     }
 }

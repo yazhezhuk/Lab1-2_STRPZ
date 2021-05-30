@@ -11,34 +11,31 @@ using DAL.UnitOfWork;
 using Domain.GoodsDomain;
 using Domain.OrderDomain;
 using Domain.WarehouseDomain;
+using Microsoft.Extensions.DependencyInjection;
 using Services.Abstractions;
-using Services.Services;
 
 namespace WPFApp.ViewModels
 {
 	public class AppViewModel: INotifyPropertyChanged
-	{
-
-
-		private readonly IGoodsService _goodsService;
-		private readonly IOrderService _orderService;
-		private readonly IWarehouseService _warehouseService;
+	{ 
+		private IWarehouseService _warehouseService;
+		private IGoodsService     _goodsService;
+		private IOrderService     _orderService;
 
 		
-		private OrderModel pendingOrder;
-		private GoodsModel selectedGoods;
 		private WarehouseModel selectedWarehouse;
-
-
+		private OrderModel     pendingOrder;
+		private GoodsModel     selectedGoods;
+		
+		private ICommand addGoodsCommand;
+		private ICommand commitOrderCommand;
+		
 		private string goodsQuantity;
-
-		public OrderDataViewModel OrderDataViewModel { get; }
 
 		public ObservableCollection<GoodsModel> Goods { get; set; }
 		public ObservableCollection<WarehouseModel> Warehouses { get; set; }
-
-		private ICommand addGoodsCommand;
-		private ICommand commitOrderCommand;
+		
+		public OrderDataViewModel OrderDataViewModel { get; }
 
 
 		public GoodsModel SelectedGoods
@@ -70,8 +67,11 @@ namespace WPFApp.ViewModels
 		}
 
 		public ICommand AddGoodsCommand => addGoodsCommand ??= new CommandHandler(
-			AddGoodsAction, 
-			() => selectedGoods != null && goodsQuantity != string.Empty);
+			AddGoodsAction,
+			() =>
+				selectedGoods != null 
+				&& int.TryParse(goodsQuantity, out _) 
+				&& int.Parse(goodsQuantity) >= 1); 
 		
 		public ICommand CommitOrderCommand => commitOrderCommand ??= new CommandHandler(
 			CommitGoodsAction, 
@@ -109,18 +109,23 @@ namespace WPFApp.ViewModels
 			
 			OrderDataViewModel.OnOrderListChanged();
 		}
+
 		
-
-		public AppViewModel(UnitOfWork unitOfWork)
+		public AppViewModel(IServiceProvider serviceProvider)
 		{
-			_warehouseService = new WarehouseService(unitOfWork);
-			_goodsService     = new GoodsService(unitOfWork);
-			_orderService     = new OrderService(unitOfWork);
+			RegisterServices(serviceProvider);
 			
-			Goods      = new ObservableCollection<GoodsModel>(_goodsService.GetAll());
 			Warehouses = new ObservableCollection<WarehouseModel>(_warehouseService.GetAll());
+			Goods      = new ObservableCollection<GoodsModel>(_goodsService.GetAll());
 
-			OrderDataViewModel = new OrderDataViewModel(unitOfWork);
+			OrderDataViewModel = new OrderDataViewModel(serviceProvider);
+		}
+		
+		private void RegisterServices(IServiceProvider serviceProvider)
+		{
+			_goodsService     = serviceProvider.GetService<IGoodsService>();
+			_warehouseService = serviceProvider.GetService<IWarehouseService>();
+			_orderService     = serviceProvider.GetService<IOrderService>();
 		}
  
 		public event PropertyChangedEventHandler PropertyChanged;

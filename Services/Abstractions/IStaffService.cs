@@ -5,8 +5,9 @@ using Types;
 
 namespace Services.Abstractions
 {
-    public interface IStaffService : IService<EmployeeModel>
+    public interface IStaffService
     {
         EmployeeModel GetLeastBusyEmployee(Speciality spec);
+        void Update(EmployeeModel employee);
     }
 }

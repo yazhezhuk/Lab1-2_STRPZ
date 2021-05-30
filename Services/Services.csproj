@@ -52,16 +52,15 @@
     <ItemGroup>
         <Compile Include="Abstractions\IGoodsService.cs" />
         <Compile Include="Abstractions\IOrderService.cs" />
-        <Compile Include="Abstractions\IService.cs" />
         <Compile Include="Abstractions\IStaffService.cs" />
         <Compile Include="Abstractions\IWarehouseService.cs" />
-        <Compile Include="ChainHandlers\ChainHanlder.cs" />
-        <Compile Include="ChainHandlers\EmployeeHandler.cs" />
+        <Compile Include="ResponsibilityChainHandlers\ChainNodeHandler.cs" />
+        <Compile Include="ResponsibilityChainHandlers\EmployeeNodeHandler.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Services\GoodsService.cs" />
-        <Compile Include="Services\OrderService.cs" />
-        <Compile Include="Services\StaffService.cs" />
-        <Compile Include="Services\WarehouseService.cs" />
+        <Compile Include="Implementation\GoodsService.cs" />
+        <Compile Include="Implementation\OrderService.cs" />
+        <Compile Include="Implementation\StaffService.cs" />
+        <Compile Include="Implementation\WarehouseService.cs" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\DAL\DAL.csproj">

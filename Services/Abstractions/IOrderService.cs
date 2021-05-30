@@ -5,13 +5,11 @@ using Domain.WarehouseDomain;
 
 namespace Services.Abstractions
 {
-    public interface IOrderService : IService<OrderModel>
+    public interface IOrderService
     {
         OrderModel MakeOrder();
         void ProcessOrder(OrderModel order);
-
-        OrderModel? GetPendingOrder();
-
-        void Clear();
+        void Add(OrderModel order);
+        public List<OrderModel> GetAll();
     }
 }

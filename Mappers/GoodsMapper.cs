@@ -6,14 +6,7 @@ namespace Mappers
 {
     public class GoodsMapper
     {
-        public GoodsEntity ToEntity(GoodsModel goods) => new GoodsEntity
-        {
-                Id = goods.Id,
-                Price = goods.Price,
-                Name = goods.Name
-        };
-
-        public GoodsModel ToModel(GoodsEntity goods)
+	    public GoodsModel ToModel(GoodsEntity goods)
         { 
 	        GoodsFactory factory = new GoodsFactory();
 	        

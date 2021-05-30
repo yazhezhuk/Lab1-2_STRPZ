@@ -7,22 +7,22 @@ using Entities;
 
 namespace EfRepository.Repositories
 {
-	public class GenericRepository<TEntity> : IRepository<TEntity>
+	public abstract class GenericRepository<TEntity> : IRepository<TEntity,int>
 		where TEntity : class, IEntity
 
 	{
-		private readonly ShopContext _dataContext;
-		private readonly DbSet<TEntity> _dataTable;
+		protected readonly ShopContext _dataContext;
+		protected readonly DbSet<TEntity> _dataTable;
 
 
-		public GenericRepository(ShopContext dataContext, DbSet<TEntity> dataTable)
+		protected GenericRepository(ShopContext dataContext, DbSet<TEntity> dataTable)
 		{
 
 			_dataTable = dataTable;
 			_dataContext = dataContext;
 		}
 
-		public void Delete(TEntity entity)
+		public virtual void Delete(TEntity entity)
 		{
 			_dataContext.Entry(entity).State = EntityState.Unchanged;
 			_dataTable.Attach(entity);
@@ -30,18 +30,13 @@ namespace EfRepository.Repositories
 			_dataTable.Remove(entity);
 		}
 
-		public List<TEntity> GetAll() => _dataTable.ToList();
+		public virtual List<TEntity> GetAll() => _dataTable.ToList();
 
 
-		public TEntity GetById(int id) =>
-			_dataTable.FirstOrDefault(entity => entity.Id == id);
-
-		public void AddOrUpdate(TEntity obj) {
-			_dataTable.AddOrUpdate(obj);
-			_dataContext.SaveChanges();
-		}
+		public virtual TEntity GetById(int id) =>
+			_dataTable.Find(id);
 		
-		public void Add(TEntity obj) {
+		public virtual void Add(TEntity obj) {
 			_dataTable.Add(obj);
 			_dataContext.SaveChanges();
 		}

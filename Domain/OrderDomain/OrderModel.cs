@@ -20,8 +20,6 @@ namespace Domain.OrderDomain
         public DateTime TimeOfCreation { get; set; }
         public TimeSpan EstimateProcessTime { get; set; }
         
-        public DateTime EstimateDeliveryTime => TimeOfCreation + EstimateProcessTime;
-
         public double TotalCost { get; set; }
 
         public bool Completed { get; set; } = false;

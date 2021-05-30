@@ -10,20 +10,18 @@ using DAL.UnitOfWork;
 using Domain.Annotations;
 using Domain.GoodsDomain;
 using Domain.OrderDomain;
+using Microsoft.Extensions.DependencyInjection;
 using Services.Abstractions;
-using Services.Services;
 
 namespace WPFApp.ViewModels
 {
 	public class OrderDataViewModel : INotifyPropertyChanged
 	{
-
-		private readonly IGoodsService _goodsService;
-		private readonly IOrderService _orderService;
-
-		private OrderModel _selectedOrder;
+		private IGoodsService _goodsService;
+		private IOrderService _orderService;
 
 		private ObservableCollection<OrderModel> _orders;
+		private OrderModel _selectedOrder;
 
 		public ObservableCollection<OrderModel> Orders
 		{
@@ -34,9 +32,6 @@ namespace WPFApp.ViewModels
 				OnPropertyChanged();
 			}
 		}
-
-		
-		
 		public OrderModel SelectedOrder
 		{
 			get => _selectedOrder;
@@ -46,14 +41,19 @@ namespace WPFApp.ViewModels
 			}
 		}
 		
-		public OrderDataViewModel(UnitOfWork unitOfWork)
+		public OrderDataViewModel(IServiceProvider serviceProvider)
 		{
-			_goodsService = new GoodsService(unitOfWork);
-			_orderService = new OrderService(unitOfWork);
+			RegisterServices(serviceProvider);
 
 			Orders = new ObservableCollection<OrderModel>(_orderService.GetAll());
 		}
 
+		private void RegisterServices(IServiceProvider serviceProvider)
+		{
+			_goodsService = serviceProvider.GetService<IGoodsService>();
+			_orderService = serviceProvider.GetService<IOrderService>();
+		}
+		
 		public void OnOrderListChanged()
 		{
 			Orders = new ObservableCollection<OrderModel>(_orderService.GetAll());

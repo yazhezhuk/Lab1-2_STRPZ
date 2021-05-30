@@ -8,32 +8,25 @@ namespace DAL.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
 
-	    public ShopContext Context { get; set; }
-
-
+	    private readonly ShopContext _context;
+	    
 	    public UnitOfWork(ShopContext context)
         {
-            Context = context;
-            Goods = new GenericRepository<GoodsEntity>(context,context.GoodsData);
-            Employees = new GenericRepository<EmployeeEntity>(context,context.EmployeesData);
-            Warehouses = new GenericRepository<WarehouseEntity>(context,context.WarehousesData);
-            Orders = new GenericRepository<OrderEntity>(context,context.OrdersData);
-            EmployeeSpecialities = new GenericRepository<EmployeeSpecialityEntity>(context,context.EmployeeSpecialities);
-            OrderInfos = new GenericRepository<OrderItemEntity>(context,context.OrderItemsData);
-            GoodsTypes = new GenericRepository<GoodsTypeEntity>(context, context.GoodsTypes);
+            _context = context;
+            Goods = new GoodsRepository(context,context.GoodsData);
+            Employees = new EmployeeRepository(context,context.EmployeesData);
+            Warehouses = new WarehouseRepository(context,context.WarehousesData);
+            Orders = new OrderRepository(context,context.OrdersData);
+            OrderItems = new OrderItemRepository(context,context.OrderItemsData);
         }
-
-        public IRepository<GoodsEntity> Goods { get; set; }
-        public IRepository<EmployeeEntity> Employees { get; set; }
-        public IRepository<WarehouseEntity> Warehouses { get; set; }
-        public IRepository<OrderEntity> Orders { get; set; }
-        public IRepository<OrderItemEntity> OrderInfos { get; set; }
-        public IRepository<EmployeeSpecialityEntity> EmployeeSpecialities { get; set; }
-        public IRepository<GoodsTypeEntity> GoodsTypes { get; set; }
-        
-
-
+	    
+	    public IGoodsRepository Goods { get; set; }
+	    public IEmployeeRepository Employees { get; set; }
+	    public IWarehouseRepository Warehouses { get; set; }
+	    public IOrderRepository Orders { get; set; }
+         public IOrderItemRepository OrderItems { get; set; }
+         
         public void CommitChanges() =>
-		Context.SaveChanges();
+		_context.SaveChanges();
     }
 }

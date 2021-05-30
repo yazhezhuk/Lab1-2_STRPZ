@@ -12,8 +12,8 @@ namespace EfRepository
         {
 	        var employeeTypes = new List<EmployeeSpecialityEntity>
 	        {
-		        new() { Speciality = Speciality.Manager },
-		        new() { Speciality = Speciality.Driver }
+		        new() { Speciality = Speciality.Driver },
+		        new() { Speciality = Speciality.Manager }
 	        };
 	        employeeTypes.ForEach(item => context.EmployeeSpecialities.AddOrUpdate(item));
 	        context.SaveChanges();

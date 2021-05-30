@@ -10,11 +10,6 @@ namespace Mappers
     {
 	    private  OrderMapper _orderMapper;
 
-	    public EmployeeMapper()
-	    {
-		    
-	    }
-
 	    public EmployeeEntity ToEntity(EmployeeModel employee) => new()
             {
                 Id = employee.Id,
